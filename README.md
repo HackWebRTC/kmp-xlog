@@ -1,6 +1,6 @@
 # kmp-xlog
 
-KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars).
+KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars). [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.piasy/kmp-xlog/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.piasy/kmp-xlog)
 
 ## Dependency
 
@@ -10,14 +10,14 @@ kotlin {
   sourceSets {
     val commonMain by getting {
       dependencies {
-        implementation("com.piasy:kmp-xlog:$releaseVersion")
+        implementation("com.piasy:kmp-xlog:$version")
       }
     }
   }
 }
 
 // add iOS cocoapods dependency
-// TODO
+pod 'kmp_xlog', '~> $version'
 ```
 
 ## Usage

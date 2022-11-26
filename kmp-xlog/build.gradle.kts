@@ -52,7 +52,7 @@ kotlin {
     ios.deploymentTarget = Consts.iosDeploymentTarget
 
     license = "{ :type => 'MIT', :file => 'LICENSE'}"
-    source = "{ :git => 'https://github.com/HackWebRTC/kmp-xlog.git', :tag => 'v$version' }"
+    source = "{ :http => '$homepage/releases/download/v$version/kmp_xlog.xcframework.zip' }"
     authors = "Piasy Xu"
 
     extraSpecAttributes["libraries"] = "'z'"
