@@ -20,24 +20,41 @@ kotlin {
       }
     }
 
-    // kmp doesn't support link to xcframework now,
-    // but actually we don't need to link it when build static framework
-    /*val libPath = hashMapOf(
-        "iosArm64" to "os-arm64",
-        "iosSimulatorArm64" to "sim-arm64",
-        "iosX64" to "sim-x64",
+    val xcFrameworks = listOf("mars")
+    val libs = listOf("xlog")
+    val sysLibs = listOf("z")
+
+    val pL = hashMapOf(
+      "iosArm64" to "os-arm64",
+      "iosSimulatorArm64" to "sim-arm64",
+      "iosX64" to "sim-x64",
     )
+    val pF = hashMapOf(
+      "iosArm64" to "ios-arm64",
+      "iosSimulatorArm64" to "ios-arm64_x86_64-simulator",
+      "iosX64" to "ios-arm64_x86_64-simulator",
+    )
+
+    val linkerOptions = ArrayList<String>()
+    // workaround according to https://youtrack.jetbrains.com/issue/KT-55153
+    for (xcFramework in xcFrameworks) {
+      linkerOptions.add("-F${project.projectDir}/src/iosMain/frameworks/$xcFramework.xcframework/${pF[t.name]}")
+      linkerOptions.add("-framework")
+      linkerOptions.add(xcFramework)
+    }
+    for (lib in libs) {
+      linkerOptions.add("-L${project.projectDir}/src/iosMain/libs/${pL[t.name]}")
+      linkerOptions.add("-l$lib")
+    }
+    for (lib in sysLibs) {
+      linkerOptions.add("-l$lib")
+    }
+
     t.binaries {
-        all {
-            linkerOpts(
-                 "-F${project.projectDir}/src/iosMain/frameworks",
-                 "-framework", "mars",
-                 "-L${project.projectDir}/src/iosMain/libs/${libPath[t.name]}",
-                 "-lxlog",
-                 "-lz"
-            )
-        }
-    }*/
+      all {
+        linkerOpts(linkerOptions)
+      }
+    }
   }
 
   cocoapods {
@@ -54,7 +71,7 @@ kotlin {
     extraSpecAttributes["framework"] = "'SystemConfiguration'"
     framework {
       baseName = "kmp_xlog"
-      isStatic = true
+      isStatic = false
       embedBitcode("disable")
     }
   }
