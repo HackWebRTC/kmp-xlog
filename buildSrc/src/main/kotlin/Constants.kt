@@ -1,7 +1,7 @@
 object Consts {
   const val agp = "7.3.0"
 
-  const val kotlin = "1.7.10"
+  const val kotlin = "1.7.21"
 
   const val mockk = "1.12.4"
   const val androidXTestVersion = "1.5.0"

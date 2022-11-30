@@ -11,39 +11,34 @@ kotlin {
     publishLibraryVariants("release", "debug")
   }
 
-  iosArm64()
-  iosSimulatorArm64()
-  iosX64()
-  targets.filter { it.name.contains("ios") }
-    .forEach {
-      val t = it as org.jetbrains.kotlin.gradle.plugin.mpp.KotlinNativeTarget
-      t.compilations.getByName("main") {
-        val xlog by cinterops.creating {
-          defFile("src/iosMain/cinterop/xlog.def")
+  listOf(iosArm64(), iosSimulatorArm64(), iosX64()).forEach { t ->
+    t.compilations.getByName("main") {
+      val xlog by cinterops.creating {
+        defFile("src/iosMain/cinterop/xlog.def")
 
-          includeDirs("${project.projectDir}/src/iosMain/objc")
-        }
+        includeDirs("${project.projectDir}/src/iosMain/objc")
       }
-
-      // kmp doesn't support link to xcframework now,
-      // but actually we don't need to link it when build static framework
-      /*val libPath = hashMapOf(
-          "iosArm64" to "os-arm64",
-          "iosSimulatorArm64" to "sim-arm64",
-          "iosX64" to "sim-x64",
-      )
-      t.binaries {
-          all {
-              linkerOpts(
-                   "-F${project.projectDir}/src/iosMain/frameworks",
-                   "-framework", "mars",
-                   "-L${project.projectDir}/src/iosMain/libs/${libPath[t.name]}",
-                   "-lxlog",
-                   "-lz"
-              )
-          }
-      }*/
     }
+
+    // kmp doesn't support link to xcframework now,
+    // but actually we don't need to link it when build static framework
+    /*val libPath = hashMapOf(
+        "iosArm64" to "os-arm64",
+        "iosSimulatorArm64" to "sim-arm64",
+        "iosX64" to "sim-x64",
+    )
+    t.binaries {
+        all {
+            linkerOpts(
+                 "-F${project.projectDir}/src/iosMain/frameworks",
+                 "-framework", "mars",
+                 "-L${project.projectDir}/src/iosMain/libs/${libPath[t.name]}",
+                 "-lxlog",
+                 "-lz"
+            )
+        }
+    }*/
+  }
 
   cocoapods {
     summary = "KMP wrapper for tencent mars xlog"
