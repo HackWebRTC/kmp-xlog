@@ -6,50 +6,13 @@ plugins {
   signing
 }
 
-// Stub secrets to let the project sync and build without the publication values set up
-ext["signing.keyId"] = null
-ext["signing.password"] = null
-ext["signing.secretKeyRingFile"] = null
-ext["ossrhUsername"] = null
-ext["ossrhPassword"] = null
-
-// Grabbing secrets from local.properties file or from environment variables, which could be used on CI
-val secretPropsFile = project.rootProject.file("local.properties")
-if (secretPropsFile.exists()) {
-  secretPropsFile.reader().use {
-    Properties().apply {
-      load(it)
-    }
-  }.onEach { (name, value) ->
-    ext[name.toString()] = value
-  }
-} else {
-  ext["signing.keyId"] = System.getenv("SIGNING_KEY_ID")
-  ext["signing.password"] = System.getenv("SIGNING_PASSWORD")
-  ext["signing.secretKeyRingFile"] = System.getenv("SIGNING_SECRET_KEY_RING_FILE")
-  ext["ossrhUsername"] = System.getenv("OSSRH_USERNAME")
-  ext["ossrhPassword"] = System.getenv("OSSRH_PASSWORD")
-}
-
-ext["artifact.name"] = null
-ext["artifact.desc"] = null
-ext["artifact.url"] = null
-val propsFile = project.rootProject.file("gradle.properties")
-if (propsFile.exists()) {
-  propsFile.reader().use {
-    Properties().apply {
-      load(it)
-    }
-  }.onEach { (name, value) ->
-    ext[name.toString()] = value
-  }
-}
+ext["signing.keyId"] = getPropString(project, "signing.keyId")
+ext["signing.password"] = getPropString(project, "signing.password")
+ext["signing.secretKeyRingFile"] = getPropString(project, "signing.secretKeyRingFile")
 
 val javadocJar by tasks.registering(Jar::class) {
   archiveClassifier.set("javadoc")
 }
-
-fun getExtraString(name: String) = ext[name]?.toString()
 
 publishing {
   // Configure maven central repository
@@ -58,8 +21,8 @@ publishing {
       name = "sonatype"
       setUrl("https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/")
       credentials {
-        username = getExtraString("ossrhUsername")
-        password = getExtraString("ossrhPassword")
+        username = getPropString(project, "ossrhUsername")
+        password = getPropString(project, "ossrhPassword")
       }
     }
   }
@@ -71,9 +34,9 @@ publishing {
 
     // Provide artifacts information requited by Maven Central
     pom {
-      name.set(getExtraString("artifact.name"))
-      description.set(getExtraString("artifact.desc"))
-      url.set(getExtraString("artifact.url"))
+      name.set(project.name)
+      description.set(getPropString(project, "artifact.desc"))
+      url.set(getPropString(project, "artifact.url"))
 
       licenses {
         license {
@@ -89,7 +52,7 @@ publishing {
         }
       }
       scm {
-        url.set(getExtraString("artifact.url"))
+        url.set(getPropString(project, "artifact.url"))
       }
     }
   }
@@ -99,3 +62,6 @@ publishing {
 signing {
   sign(publishing.publications)
 }
+
+group = Consts.releaseGroup
+version = Consts.releaseVersion

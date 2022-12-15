@@ -118,6 +118,3 @@ tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile>().configureEach 
     jvmTarget = "11"
   }
 }
-
-group = Consts.releaseGroup
-version = Consts.releaseVersion

@@ -13,8 +13,12 @@ plugins {
 
     kotlin("android").version(Consts.kotlin).apply(false)
     kotlin("multiplatform").version(Consts.kotlin).apply(false)
+
+    id("io.codearte.nexus-staging").version("0.30.0")
 }
 
-tasks.register("clean", Delete::class) {
-    delete(rootProject.buildDir)
+nexusStaging {
+    packageGroup = Consts.releaseGroup
+    username = getPropString(project, "ossrhUsername")
+    password = getPropString(project, "ossrhPassword")
 }
