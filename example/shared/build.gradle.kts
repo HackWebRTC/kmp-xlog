@@ -6,6 +6,7 @@ plugins {
 
 kotlin {
   android()
+
   iosX64()
   iosArm64()
   iosSimulatorArm64()
@@ -22,10 +23,16 @@ kotlin {
     }
   }
 
+  js(IR) {
+    browser {
+    }
+    binaries.executable()
+  }
+
   sourceSets {
     val commonMain by getting {
       dependencies {
-        implementation("${Consts.releaseGroup}:${Consts.releaseName}:${Consts.releaseVersion}")
+        //implementation("${Consts.releaseGroup}:${Consts.releaseName}:${Consts.releaseVersion}")
       }
     }
     val commonTest by getting {
@@ -33,8 +40,10 @@ kotlin {
         implementation(kotlin("test"))
       }
     }
+
     val androidMain by getting
     val androidTest by getting
+
     val iosX64Main by getting
     val iosArm64Main by getting
     val iosSimulatorArm64Main by getting

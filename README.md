@@ -45,6 +45,9 @@ fun initializeMarsXLog(
   logToConsole: Boolean
 )
 
+// JS initialize
+fun initializeConsoleLog()
+
 // logging
 object Logging {
   fun debug(tag: String, content: String)

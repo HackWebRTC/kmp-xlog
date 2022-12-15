@@ -1,28 +1,34 @@
 plugins {
   kotlin("multiplatform")
   kotlin("native.cocoapods")
+
   id("com.android.library")
 
   id("convention.publication")
 }
+
+val hostOs: String = System.getProperty("os.name")
+val isMacOS = hostOs == "Mac OS X"
+val isWindows = hostOs.startsWith("Windows")
 
 kotlin {
   android() {
     publishLibraryVariants("release", "debug")
   }
 
-  listOf(iosArm64(), iosSimulatorArm64(), iosX64()).forEach { t ->
-    t.compilations.getByName("main") {
-      val xlog by cinterops.creating {
-        defFile("src/iosMain/cinterop/xlog.def")
+  if (isMacOS) {
+    listOf(iosArm64(), iosSimulatorArm64(), iosX64()).forEach { t ->
+      t.compilations.getByName("main") {
+        val xlog by cinterops.creating {
+          defFile("src/iosMain/cinterop/xlog.def")
 
-        includeDirs("${project.projectDir}/src/iosMain/objc")
+          includeDirs("${project.projectDir}/src/iosMain/objc")
+        }
       }
-    }
 
-    // kmp doesn't support link to xcframework now,
-    // but actually we don't need to link it when build static framework
-    /*val libPath = hashMapOf(
+      // kmp doesn't support link to xcframework now,
+      // but actually we don't need to link it when build static framework
+      /*val libPath = hashMapOf(
         "iosArm64" to "os-arm64",
         "iosSimulatorArm64" to "sim-arm64",
         "iosX64" to "sim-x64",
@@ -38,24 +44,31 @@ kotlin {
             )
         }
     }*/
-  }
+    }
 
-  cocoapods {
-    summary = "KMP wrapper for tencent mars xlog"
-    homepage = "https://github.com/HackWebRTC/kmp-xlog"
-    version = Consts.releaseVersion
-    ios.deploymentTarget = Consts.iosDeploymentTarget
+    cocoapods {
+      summary = "KMP wrapper for tencent mars xlog"
+      homepage = "https://github.com/HackWebRTC/kmp-xlog"
+      version = Consts.releaseVersion
+      ios.deploymentTarget = Consts.iosDeploymentTarget
 
-    license = "{ :type => 'MIT', :file => 'LICENSE'}"
-    source = "{ :http => '$homepage/releases/download/v$version/kmp_xlog.xcframework.zip' }"
-    authors = "Piasy Xu"
+      license = "{ :type => 'MIT', :file => 'LICENSE'}"
+      source = "{ :http => '$homepage/releases/download/v$version/kmp_xlog.xcframework.zip' }"
+      authors = "Piasy Xu"
 
-    extraSpecAttributes["libraries"] = "'z'"
-    extraSpecAttributes["framework"] = "'SystemConfiguration'"
-    framework {
-      baseName = "kmp_xlog"
-      isStatic = true
-      embedBitcode("disable")
+      extraSpecAttributes["libraries"] = "'z'"
+      extraSpecAttributes["framework"] = "'SystemConfiguration'"
+      framework {
+        baseName = "kmp_xlog"
+        isStatic = true
+        embedBitcode("disable")
+      }
+    }
+
+    js(IR) {
+      browser {
+      }
+      binaries.executable()
     }
   }
 
@@ -67,29 +80,39 @@ kotlin {
         implementation("io.mockk:mockk-common:${Consts.mockk}")
       }
     }
+
     val androidMain by getting
     val androidTest by getting {
       dependencies {
         implementation("io.mockk:mockk:${Consts.mockk}")
       }
     }
-    val iosArm64Main by getting
-    val iosSimulatorArm64Main by getting
-    val iosX64Main by getting
-    val iosMain by creating {
-      dependsOn(commonMain)
-      iosArm64Main.dependsOn(this)
-      iosSimulatorArm64Main.dependsOn(this)
-      iosX64Main.dependsOn(this)
-    }
-    val iosArm64Test by getting
-    val iosSimulatorArm64Test by getting
-    val iosX64Test by getting
-    val iosTest by creating {
-      dependsOn(commonTest)
-      iosArm64Test.dependsOn(this)
-      iosSimulatorArm64Test.dependsOn(this)
-      iosX64Test.dependsOn(this)
+
+    if (isMacOS) {
+      val iosArm64Main by getting
+      val iosSimulatorArm64Main by getting
+      val iosX64Main by getting
+      val iosMain by creating {
+        dependsOn(commonMain)
+        iosArm64Main.dependsOn(this)
+        iosSimulatorArm64Main.dependsOn(this)
+        iosX64Main.dependsOn(this)
+      }
+      val iosArm64Test by getting
+      val iosSimulatorArm64Test by getting
+      val iosX64Test by getting
+      val iosTest by creating {
+        dependsOn(commonTest)
+        iosArm64Test.dependsOn(this)
+        iosSimulatorArm64Test.dependsOn(this)
+        iosX64Test.dependsOn(this)
+      }
+
+      val jsMain by getting {
+        dependencies {
+          implementation(kotlin("stdlib-js"))
+        }
+      }
     }
   }
 }
