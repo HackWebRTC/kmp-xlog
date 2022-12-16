@@ -1,3 +1,3 @@
 [submodule "mars"]
 	path = mars
-	url = git@github.com:HackWebRTC/mars.git
+	url = https://github.com/HackWebRTC/mars.git
