@@ -1,6 +1,6 @@
-name: xlog
+name: kmp_xlog
 targets:
-  xlog:
+  kmp_xlog:
     type: library.static
     platform: iOS
     deploymentTarget: "14.0"

@@ -1,0 +1,97 @@
+// Kotlin DSL only supports syntax shortcut for plugin inside plugins block,
+// but plugins block doesn't support `if` syntax, so we have to stay on groovy.
+plugins {
+  id "org.jetbrains.kotlin.multiplatform"
+}
+
+def hostOs = System.getProperty("os.name")
+def isMacOS = hostOs == "Mac OS X"
+def isWindows = hostOs.startsWith("Windows")
+def isLinux = hostOs == "Linux"
+
+if (isMacOS) {
+  apply plugin: "com.android.library"
+  apply plugin: "org.jetbrains.kotlin.native.cocoapods"
+}
+
+kotlin {
+  if (isMacOS) {
+    android()
+
+    iosX64()
+    iosArm64()
+    iosSimulatorArm64()
+
+    cocoapods {
+      summary = "Some description for the Shared Module"
+      homepage = "Link to the Shared Module homepage"
+      version = "1.0"
+      ios.deploymentTarget = "14.1"
+      podfile = project.file("../iosApp/Podfile")
+      framework {
+        baseName = "shared"
+        isStatic = true
+      }
+    }
+
+    js(IR) {
+      browser {
+      }
+      binaries.executable()
+    }
+  }
+
+  if (isLinux) {
+    linuxX64 {
+      binaries {
+        all {
+          linkerOpts = [
+            "-L${rootProject.projectDir}/kmp-xlog/src/linuxMain/libs/x64".toString(),
+            "-lkmp_xlog",
+            "-lpthread",
+            "-lz",
+            ]
+        }
+
+        executable("kmp_xlog") {
+          entryPoint = "com.piasy.kmp.xlog.example.main"
+        }
+      }
+    }
+  }
+
+  sourceSets {
+    commonMain {
+      dependencies {
+        implementation("${Consts.releaseGroup}:${Consts.releaseName}:${Consts.releaseVersion}")
+      }
+    }
+
+    if (isMacOS) {
+      iosMain {
+        dependsOn(commonMain)
+      }
+      iosArm64Main.dependsOn(iosMain)
+      iosSimulatorArm64Main.dependsOn(iosMain)
+      iosX64Main.dependsOn(iosMain)
+    }
+
+    if (isLinux) {
+      linuxMain {
+        dependsOn(commonMain)
+      }
+      linuxX64Main.dependsOn(linuxMain)
+    }
+  }
+}
+
+if (isMacOS) {
+  android {
+    namespace = "${Consts.androidNS}.android"
+    compileSdk = Consts.androidCompileSdk
+    defaultConfig {
+      minSdk = Consts.androidMinSdk
+      targetSdk = Consts.androidTargetSdk
+    }
+  }
+}

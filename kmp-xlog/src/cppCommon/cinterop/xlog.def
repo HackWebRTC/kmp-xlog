@@ -1,0 +1,2 @@
+headers = MarsXLog.h
+headerFilter = *

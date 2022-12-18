@@ -1,0 +1,134 @@
+// Kotlin DSL only supports syntax shortcut for plugin inside plugins block,
+// but plugins block doesn't support `if` syntax, so we have to stay on groovy.
+plugins {
+  id "org.jetbrains.kotlin.multiplatform"
+
+  id "convention.publication"
+}
+
+def hostOs = System.getProperty("os.name")
+def isMacOS = hostOs == "Mac OS X"
+def isWindows = hostOs.startsWith("Windows")
+def isLinux = hostOs == "Linux"
+
+if (isMacOS) {
+  apply plugin: "com.android.library"
+  apply plugin: "org.jetbrains.kotlin.native.cocoapods"
+}
+
+kotlin {
+  if (isMacOS) {
+    android() {
+      publishLibraryVariants("release", "debug")
+    }
+
+    [iosArm64(), iosSimulatorArm64(), iosX64()].forEach { t ->
+      t.compilations.main.cinterops {
+        xlog {
+          defFile "src/iosMain/cinterop/xlog.def"
+          includeDirs {
+            allHeaders "${project.projectDir}/src/iosMain/objc"
+          }
+        }
+      }
+    }
+
+    cocoapods {
+      summary = "KMP wrapper for tencent mars xlog"
+      homepage = "https://github.com/HackWebRTC/kmp-xlog"
+      version = Consts.releaseVersion
+      ios.deploymentTarget = Consts.iosDeploymentTarget
+
+      license = "{ :type => 'MIT', :file => 'LICENSE'}"
+      source = "{ :http => '$homepage/releases/download/v$version/kmp_xlog.xcframework.zip' }"
+      authors = "Piasy Xu"
+
+      extraSpecAttributes["libraries"] = "'z'"
+      extraSpecAttributes["framework"] = "'SystemConfiguration'"
+      framework {
+        baseName = "kmp_xlog"
+        isStatic = true
+        embedBitcode("disable")
+      }
+    }
+
+    js(IR) {
+      browser {
+      }
+      binaries.executable()
+    }
+  }
+
+  if (isLinux) {
+    linuxX64 {
+      compilations.main.cinterops {
+        xlog {
+          defFile "src/cppCommon/cinterop/xlog.def"
+          includeDirs {
+            allHeaders "${project.projectDir}/src/cppCommon/cpp"
+          }
+        }
+      }
+    }
+  }
+
+  sourceSets {
+    commonTest {
+      dependencies {
+        implementation(kotlin("test")) // This brings all the platform dependencies automatically
+        implementation("io.mockk:mockk-common:${Consts.mockk}")
+      }
+    }
+
+    if (isMacOS) {
+      androidTest {
+        dependencies {
+          implementation("io.mockk:mockk:${Consts.mockk}")
+        }
+      }
+
+      iosMain {
+        dependsOn(commonMain)
+      }
+      iosArm64Main.dependsOn(iosMain)
+      iosSimulatorArm64Main.dependsOn(iosMain)
+      iosX64Main.dependsOn(iosMain)
+
+      jsMain {
+        dependencies {
+          implementation(kotlin("stdlib-js"))
+        }
+      }
+    }
+
+    if (isLinux) {
+      cppCommon.dependsOn(commonMain)
+      linuxX64Main.dependsOn(cppCommon)
+    }
+  }
+}
+
+if (isMacOS) {
+  android {
+    compileSdk = Consts.androidCompileSdk
+    ndkVersion = Consts.androidNdk
+    namespace = Consts.androidNS
+
+    defaultConfig {
+      minSdk = Consts.androidMinSdk
+      targetSdk = Consts.androidTargetSdk
+
+      sourceSets["main"].java.srcDir("src/androidMain/java")
+      sourceSets["main"].jniLibs.srcDir("src/androidMain/jniLibs")
+    }
+
+    compileOptions {
+      sourceCompatibility = JavaVersion.VERSION_11
+      targetCompatibility = JavaVersion.VERSION_11
+    }
+  }
+}
+
+tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
+  kotlinOptions.jvmTarget = JavaVersion.VERSION_11
+}

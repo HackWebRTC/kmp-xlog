@@ -17,7 +17,7 @@ dependencyResolutionManagement {
 rootProject.name = "kmp-xlog"
 include(":kmp-xlog")
 
+include(":example:shared")
 if (System.getProperty("os.name") == "Mac OS X") {
   include(":example:androidApp")
-  include(":example:shared")
 }
