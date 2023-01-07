@@ -46,8 +46,6 @@ kotlin {
       binaries {
         all {
           linkerOpts = [
-            "-L${rootProject.projectDir}/kmp-xlog/src/linuxMain/libs/x64".toString(),
-            "-lkmp_xlog",
             "-lpthread",
             "-lz",
             ]

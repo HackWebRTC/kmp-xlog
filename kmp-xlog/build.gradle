@@ -1,5 +1,6 @@
 // Kotlin DSL only supports syntax shortcut for plugin inside plugins block,
 // but plugins block doesn't support `if` syntax, so we have to stay on groovy.
+
 plugins {
   id "org.jetbrains.kotlin.multiplatform"
 
@@ -61,13 +62,20 @@ kotlin {
 
   if (isLinux) {
     linuxX64 {
-      compilations.main.cinterops {
-        xlog {
-          defFile "src/cppCommon/cinterop/xlog.def"
-          includeDirs {
-            allHeaders "${project.projectDir}/src/cppCommon/cpp"
+      compilations.main {
+        cinterops {
+          xlog {
+            defFile "src/cppCommon/cinterop/xlog.def"
+            includeDirs {
+              allHeaders "${project.projectDir}/src/cppCommon/cpp"
+            }
           }
         }
+
+        kotlinOptions.freeCompilerArgs += [
+            "-include-binary",
+            "${project.projectDir}/src/linuxMain/libs/x64/libkmp_xlog.a".toString()
+        ]
       }
     }
   }

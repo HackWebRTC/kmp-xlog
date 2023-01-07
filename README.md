@@ -20,6 +20,27 @@ kotlin {
 pod 'kmp_xlog', '~> $version'
 ```
 
+For linux targets, when building executable, you need add `pthread` and `z` linker dependencies like below:
+
+```kotlin
+kotlin {
+  linuxX64 {
+    binaries {
+      all {
+        linkerOpts(
+          "-lpthread",
+          "-lz",
+        )
+      }
+
+      executable("kmp_xlog") {
+        entryPoint = "com.piasy.kmp.xlog.example.main"
+      }
+    }
+  }
+}
+```
+
 ## Usage
 
 ```kotlin
@@ -47,6 +68,13 @@ fun initializeMarsXLog(
 
 // JS initialize
 fun initializeConsoleLog()
+
+// Linux initialize
+fun initializeMarsXLog(
+  level: Int,
+  namePrefix: String,
+  logToConsole: Boolean
+)
 
 // logging
 object Logging {

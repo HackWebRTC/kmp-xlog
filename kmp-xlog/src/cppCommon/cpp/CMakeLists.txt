@@ -24,6 +24,16 @@ elseif ("${CMAKE_SYSTEM_NAME}" STREQUAL "Linux")
 endif ()
 
 add_library(${PROJECT_NAME} STATIC ${sources})
+# add_library(${PROJECT_NAME} SHARED ${sources})
+# target_link_options(${PROJECT_NAME} PRIVATE "LINKER:-z,defs")
+# target_link_libraries(${PROJECT_NAME}
+#         xlog
+#         comm
+#         mars-boost
+#         libzstd_static
+#         pthread
+#         z
+#         )
 
 add_executable(test test.cpp)
 target_link_libraries(test
