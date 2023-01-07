@@ -44,13 +44,6 @@ kotlin {
   if (isLinux) {
     linuxX64 {
       binaries {
-        all {
-          linkerOpts = [
-            "-lpthread",
-            "-lz",
-            ]
-        }
-
         executable("kmp_xlog") {
           entryPoint = "com.piasy.kmp.xlog.example.main"
         }

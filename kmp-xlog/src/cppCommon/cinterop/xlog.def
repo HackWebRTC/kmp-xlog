@@ -1,2 +1,3 @@
 headers = MarsXLog.h
 headerFilter = *
+linkerOpts = -lpthread -lz
