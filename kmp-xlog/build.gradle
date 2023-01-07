@@ -80,6 +80,21 @@ kotlin {
     }
   }
 
+  if (isWindows) {
+    mingwX86 {
+      compilations.main {
+        cinterops {
+          xlog {
+            defFile "src/cppCommon/cinterop/xlog.def"
+            includeDirs {
+              allHeaders "${project.projectDir}/src/cppCommon/cpp"
+            }
+          }
+        }
+      }
+    }
+  }
+
   sourceSets {
     commonTest {
       dependencies {
@@ -109,9 +124,15 @@ kotlin {
       }
     }
 
-    if (isLinux) {
+    if (isLinux || isWindows) {
       cppCommon.dependsOn(commonMain)
-      linuxX64Main.dependsOn(cppCommon)
+
+      if (isLinux) {
+        linuxX64Main.dependsOn(cppCommon)
+      }
+      if (isWindows) {
+        mingwX86Main.dependsOn(cppCommon)
+      }
     }
   }
 }
