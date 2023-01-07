@@ -41,12 +41,11 @@ kotlin {
     }
   }
 
-  if (isLinux) {
-    linuxX64 {
-      binaries {
-        executable("kmp_xlog") {
-          entryPoint = "com.piasy.kmp.xlog.example.main"
-        }
+  if (isLinux || isWindows) {
+    def nativeTarget = isLinux ? linuxX64() : mingwX64()
+    nativeTarget.binaries {
+      executable("kmp_xlog") {
+        entryPoint = "com.piasy.kmp.xlog.example.main"
       }
     }
   }
@@ -67,11 +66,15 @@ kotlin {
       iosX64Main.dependsOn(iosMain)
     }
 
-    if (isLinux) {
-      linuxMain {
-        dependsOn(commonMain)
+    if (isLinux || isWindows) {
+      cppCommon.dependsOn(commonMain)
+
+      if (isLinux) {
+        linuxX64Main.dependsOn(cppCommon)
       }
-      linuxX64Main.dependsOn(linuxMain)
+      if (isWindows) {
+        mingwX64Main.dependsOn(cppCommon)
+      }
     }
   }
 }

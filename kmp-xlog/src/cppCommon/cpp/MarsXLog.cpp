@@ -10,22 +10,23 @@
 #include <unistd.h>
 #endif
 
-#include <exception>
+#include <cstdio>
+#include <string>
 
 #include <mars/comm/xlogger/xloggerbase.h>
 #include <mars/comm/xlogger/xlogger.h>
 #include <mars/log/appender.h>
 
+#include <exception>
 namespace mars_boost {
 void throw_exception( std::exception const & e ) {}
 }
 
 void MarsXLogInitialize(int level, const char* name_prefix, int log_to_console) {
 #if defined(KMP_XLOG_WINDOWS)
-    wchar_t module_buf[1024];
+    TCHAR module_buf[1024];
     GetModuleFileName(nullptr, module_buf, 1023);
-    std::wstring module_str(module_buf);
-    std::string app_path = std::string(module_str.begin(), module_str.end());
+    std::string app_path(module_buf);
 #elif defined(KMP_XLOG_LINUX)
     char result[PATH_MAX];
     ssize_t count = readlink("/proc/self/exe", result, PATH_MAX);

@@ -4,6 +4,8 @@ KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars). [![Maven C
 
 ## Dependency
 
+For Android/JS/Linux/Windows, you only need to add gradle dependency, for iOS you need add an extra cocoapods dependency.
+
 ```kotlin
 // add common source set dependency
 kotlin {
@@ -38,7 +40,7 @@ fun initializeMarsXLog(
   logToConsole: Boolean
 )
 
-// iOS initialize
+// iOS/Linux/Windows initialize
 fun initializeMarsXLog(
   level: Int,
   namePrefix: String,
@@ -47,13 +49,6 @@ fun initializeMarsXLog(
 
 // JS initialize
 fun initializeConsoleLog()
-
-// Linux initialize
-fun initializeMarsXLog(
-  level: Int,
-  namePrefix: String,
-  logToConsole: Boolean
-)
 
 // logging
 object Logging {
