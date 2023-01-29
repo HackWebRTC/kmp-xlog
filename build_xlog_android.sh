@@ -9,8 +9,9 @@ if [[ "$py" != "2" ]]; then
 fi
 
 # build mars xlog at first, with py2 env
-pushd mars
-printf '3\n' | env NDK_ROOT=/Users/piasy/tools/android-sdk/ndk/21.3.6528147 python mars/build_android.py
+pushd mars/mars
+rm -rf cmake_build/Android
+printf '3\n' | env NDK_ROOT=/Users/piasy/tools/android-sdk/ndk/21.3.6528147 python build_android.py
 popd
 
 cp mars/mars/libraries/mars_xlog_sdk/libs/armeabi-v7a/libc++_shared.so \
