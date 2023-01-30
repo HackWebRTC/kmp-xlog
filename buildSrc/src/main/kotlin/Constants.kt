@@ -1,6 +1,6 @@
 object Consts {
   const val agp = "7.3.0"
-  const val kotlin = "1.7.21"
+  const val kotlin = "1.8.0"
 
   const val androidCompileSdk = 33
   const val androidMinSdk = 21
