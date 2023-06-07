@@ -81,17 +81,17 @@ kotlin {
   }
 
   sourceSets {
-    commonTest {
-      dependencies {
-        implementation(kotlin("test")) // This brings all the platform dependencies automatically
-        implementation("io.mockk:mockk-common:${Consts.mockk}")
-      }
-    }
-
     if (isMacOS) {
+      commonTest {
+        dependencies {
+          implementation(kotlin("test")) // This brings all the platform dependencies automatically
+          implementation(Testing.mockK.common)
+        }
+      }
+
       androidTest {
         dependencies {
-          implementation("io.mockk:mockk:${Consts.mockk}")
+          implementation(Testing.mockK)
         }
       }
 

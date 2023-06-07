@@ -1,3 +1,5 @@
+import de.fayard.refreshVersions.core.versionFor
+
 plugins {
     id("com.android.application")
     kotlin("android")
@@ -17,7 +19,7 @@ android {
         compose = true
     }
     composeOptions {
-        kotlinCompilerExtensionVersion = "1.3.0"
+        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
     }
     packagingOptions {
         resources {
@@ -33,10 +35,10 @@ android {
 
 dependencies {
     implementation(project(":example:shared"))
-    implementation("androidx.compose.ui:ui:1.2.1")
-    implementation("androidx.compose.ui:ui-tooling:1.2.1")
-    implementation("androidx.compose.ui:ui-tooling-preview:1.2.1")
-    implementation("androidx.compose.foundation:foundation:1.2.1")
-    implementation("androidx.compose.material:material:1.2.1")
-    implementation("androidx.activity:activity-compose:1.5.1")
+    implementation(AndroidX.compose.ui)
+    implementation(AndroidX.compose.ui.tooling)
+    implementation(AndroidX.compose.ui.toolingPreview)
+    implementation(AndroidX.compose.foundation)
+    implementation(AndroidX.compose.material)
+    implementation(AndroidX.activity.compose)
 }
