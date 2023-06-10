@@ -21,6 +21,17 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
+    macosX64() {
+      binaries {
+        executable("kmp_xlog") {
+          entryPoint = "com.piasy.kmp.xlog.example.main"
+          linkerOpts = [
+                  "-F${rootProject.projectDir}/kmp-xlog/build/cocoapods/publish/release/kmp_xlog.xcframework/macos-arm64_x86_64".toString(),
+                  "-framework", "kmp_xlog", "-lz",
+          ]
+        }
+      }
+    }
 
     cocoapods {
       summary = "Some description for the Shared Module"
@@ -58,12 +69,14 @@ kotlin {
     }
 
     if (isMacOS) {
-      iosMain {
-        dependsOn(commonMain)
-      }
+      iosMain.dependsOn(commonMain)
+
       iosArm64Main.dependsOn(iosMain)
       iosSimulatorArm64Main.dependsOn(iosMain)
       iosX64Main.dependsOn(iosMain)
+
+      macosMain.dependsOn(commonMain)
+      macosX64Main.dependsOn(macosMain)
     }
 
     if (isLinux || isWindows) {

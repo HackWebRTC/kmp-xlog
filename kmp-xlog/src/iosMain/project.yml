@@ -5,9 +5,9 @@ targets:
     platform: iOS
     deploymentTarget: "14.0"
     sources:
-      - path: objc
+      - path: ../objcCommon/objc
     dependencies:
-      - framework: frameworks/mars.xcframework
+      - framework: ../objcCommon/frameworks/mars.xcframework
         link: true
     settings:
       LIBRARY_SEARCH_PATHS: "$(inherited)"
