@@ -101,11 +101,13 @@ pod install
 
 ## Test
 
-TODO
+Test shared code on Android unit test:
 
 ```bash
 ./gradlew :kmp-xlog:testDebugUnitTest
 ```
+
+Then check reports in `kmp-xlog/build/reports/tests/testDebugUnitTest`.
 
 ## Publish
 

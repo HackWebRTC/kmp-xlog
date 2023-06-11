@@ -191,15 +191,10 @@ kotlin {
 
   sourceSets {
     if (isMacOS) {
-      commonTest {
+      androidUnitTest {
         dependencies {
-          implementation(kotlin("test")) // This brings all the platform dependencies automatically
-          implementation(Testing.mockK.common)
-        }
-      }
-
-      androidTest {
-        dependencies {
+          implementation(kotlin("test"))
+          implementation(kotlin("test-junit"))
           implementation(Testing.mockK)
         }
       }
