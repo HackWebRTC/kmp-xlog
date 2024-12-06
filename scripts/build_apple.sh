@@ -50,7 +50,7 @@ pushd kmp-xlog
 
 libtool -static -no_warning_for_no_symbols \
   -o build/kmp_xlog-os-arm64 \
-  src/objcCommon/frameworks/mars.xcframework/ios-arm64/mars.framework/mars \
+  src/appleMain/frameworks/mars.xcframework/ios-arm64/mars.framework/mars \
   src/iosMain/libs/os-arm64/libkmp_xlog.a \
   build/cocoapods/publish/release/kmp_xlog.xcframework/ios-arm64/kmp_xlog.framework/kmp_xlog
 
@@ -63,7 +63,7 @@ lipo -create src/iosMain/libs/sim-arm64/libkmp_xlog.a \
 
 libtool -static -no_warning_for_no_symbols \
   -o build/kmp_xlog-sim-arm64-x64 \
-  src/objcCommon/frameworks/mars.xcframework/ios-arm64_x86_64-simulator/mars.framework/mars \
+  src/appleMain/frameworks/mars.xcframework/ios-arm64_x86_64-simulator/mars.framework/mars \
   build/libkmp_xlog-sim-arm64-x64.a \
   build/cocoapods/publish/release/kmp_xlog.xcframework/ios-arm64_x86_64-simulator/kmp_xlog.framework/kmp_xlog
 
@@ -76,7 +76,7 @@ lipo -create src/macosMain/libs/arm64/libkmp_xlog.a \
 
 libtool -static -no_warning_for_no_symbols \
   -o build/kmp_xlog-macos-arm64-x64 \
-  src/objcCommon/frameworks/mars.xcframework/macos-arm64_x86_64/mars.framework/mars \
+  src/appleMain/frameworks/mars.xcframework/macos-arm64_x86_64/mars.framework/mars \
   build/libkmp_xlog-macos-arm64-x64.a \
   build/cocoapods/publish/release/kmp_xlog.xcframework/macos-arm64_x86_64/kmp_xlog.framework/kmp_xlog
 

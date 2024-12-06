@@ -8,10 +8,15 @@ if [[ "$py" != "2" ]]; then
   exit
 fi
 
+if [[ -z "${NDK_ROOT}" ]]; then
+  echo "Please set NDK_ROOT env"
+  exit
+fi
+
 # build mars xlog at first, with py2 env
 pushd mars/mars
 rm -rf cmake_build/Android
-printf '3\n' | env NDK_ROOT=/Users/piasy/tools/android-sdk/ndk/21.3.6528147 python build_android.py
+printf '3\n' | python build_android.py
 popd
 
 cp mars/mars/libraries/mars_xlog_sdk/libs/armeabi-v7a/libc++_shared.so \

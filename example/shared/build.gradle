@@ -1,7 +1,7 @@
 // Kotlin DSL only supports syntax shortcut for plugin inside plugins block,
 // but plugins block doesn't support `if` syntax, so we have to stay on groovy.
 plugins {
-  id "org.jetbrains.kotlin.multiplatform"
+  alias libs.plugins.kmp
 }
 
 def hostOs = System.getProperty("os.name")
@@ -16,7 +16,7 @@ if (isMacOS) {
 
 kotlin {
   if (isMacOS) {
-    android()
+    androidTarget()
 
     iosX64()
     iosArm64()
@@ -36,8 +36,8 @@ kotlin {
     cocoapods {
       summary = "Some description for the Shared Module"
       homepage = "Link to the Shared Module homepage"
-      version = "1.0"
-      ios.deploymentTarget = "14.1"
+      version = Consts.releaseVersion
+      ios.deploymentTarget = libs.versions.iosDeploymentTarget.get()
       podfile = project.file("../iosApp/Podfile")
       framework {
         baseName = "shared"
@@ -68,25 +68,20 @@ kotlin {
       }
     }
 
-    if (isMacOS) {
-      iosMain.dependsOn(commonMain)
-
-      iosArm64Main.dependsOn(iosMain)
-      iosSimulatorArm64Main.dependsOn(iosMain)
-      iosX64Main.dependsOn(iosMain)
-
-      macosMain.dependsOn(commonMain)
-      macosX64Main.dependsOn(macosMain)
-    }
-
     if (isLinux || isWindows) {
-      cppCommon.dependsOn(commonMain)
+      cppCommon {
+        dependsOn(commonMain.get())
+      }
 
       if (isLinux) {
-        linuxX64Main.dependsOn(cppCommon)
+        linuxX64Main {
+          dependsOn(cppCommon.get())
+        }
       }
       if (isWindows) {
-        mingwX64Main.dependsOn(cppCommon)
+        mingwX64Main {
+          dependsOn(cppCommon.get())
+        }
       }
     }
   }
@@ -95,10 +90,19 @@ kotlin {
 if (isMacOS) {
   android {
     namespace = "${Consts.androidNS}.android"
-    compileSdk = Consts.androidCompileSdk
+    compileSdk = libs.versions.compileSdk.get().toInteger()
     defaultConfig {
-      minSdk = Consts.androidMinSdk
-      targetSdk = Consts.androidTargetSdk
+      minSdk = libs.versions.minSdk.get().toInteger()
+      targetSdk = libs.versions.targetSdk.get().toInteger()
+    }
+
+    compileOptions {
+      sourceCompatibility JavaVersion.toVersion(libs.versions.jvm.get().toInteger())
+      targetCompatibility JavaVersion.toVersion(libs.versions.jvm.get().toInteger())
+    }
+
+    kotlin {
+      jvmToolchain libs.versions.jvm.get().toInteger()
     }
   }
 }

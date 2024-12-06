@@ -2,7 +2,7 @@
 // but plugins block doesn't support `if` syntax, so we have to stay on groovy.
 
 plugins {
-  id "org.jetbrains.kotlin.multiplatform"
+  alias libs.plugins.kmp
 
   id "convention.publication"
 }
@@ -19,16 +19,16 @@ if (isMacOS) {
 
 kotlin {
   if (isMacOS) {
-    android() {
+    androidTarget() {
       publishLibraryVariants("release", "debug")
     }
 
     [iosArm64(), iosSimulatorArm64(), iosX64(), macosArm64(), macosX64()].forEach { t ->
       t.compilations.main.cinterops {
         xlog {
-          defFile "src/objcCommon/cinterop/xlog.def"
+          defFile "src/appleMain/cinterop/xlog.def"
           includeDirs {
-            allHeaders "${project.projectDir}/src/objcCommon/objc"
+            allHeaders "${project.projectDir}/src/appleMain/objc"
           }
         }
       }
@@ -38,7 +38,7 @@ kotlin {
       summary = "KMP wrapper for tencent mars xlog"
       homepage = "https://github.com/HackWebRTC/kmp-xlog"
       version = Consts.releaseVersion
-      ios.deploymentTarget = Consts.iosDeploymentTarget
+      ios.deploymentTarget = libs.versions.iosDeploymentTarget.get()
 
       license = "{ :type => 'MIT', :file => 'LICENSE'}"
       source = "{ :http => '$homepage/releases/download/v$version/kmp_xlog.xcframework.zip' }"
@@ -72,7 +72,7 @@ kotlin {
           }
         }
 
-        kotlinOptions.freeCompilerArgs += [
+        kotlin.freeCompilerArgs += [
             "-include-binary",
             "${project.projectDir}/src/linuxMain/libs/x64/libkmp_xlog.a".toString()
         ]
@@ -191,37 +191,39 @@ kotlin {
 
   sourceSets {
     if (isMacOS) {
+      all {
+        languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+      }
+
       androidUnitTest {
         dependencies {
-          implementation(kotlin("test"))
-          implementation(kotlin("test-junit"))
-          implementation(Testing.mockK)
+          implementation(libs.kotlin.test)
+          implementation(libs.kotlin.test.junit)
+          implementation(libs.mockk)
         }
       }
 
-      objcCommon.dependsOn(commonMain)
-
-      iosArm64Main.dependsOn(objcCommon)
-      iosSimulatorArm64Main.dependsOn(objcCommon)
-      iosX64Main.dependsOn(objcCommon)
-
-      macosX64Main.dependsOn(objcCommon)
-
       jsMain {
         dependencies {
-          implementation(kotlin("stdlib-js"))
+          implementation(libs.kotlin.stdlib.js)
         }
       }
     }
 
     if (isLinux || isWindows) {
-      cppCommon.dependsOn(commonMain)
+      cppCommon {
+        dependsOn(commonMain.get())
+      }
 
       if (isLinux) {
-        linuxX64Main.dependsOn(cppCommon)
+        linuxX64Main {
+          dependsOn(cppCommon.get())
+        }
       }
       if (isWindows) {
-        mingwX64Main.dependsOn(cppCommon)
+        mingwX64Main {
+          dependsOn(cppCommon.get())
+        }
       }
     }
   }
@@ -229,25 +231,27 @@ kotlin {
 
 if (isMacOS) {
   android {
-    compileSdk = Consts.androidCompileSdk
-    ndkVersion = Consts.androidNdk
+    compileSdk = libs.versions.compileSdk.get().toInteger()
+    ndkVersion = libs.versions.ndk.get()
     namespace = Consts.androidNS
 
     defaultConfig {
-      minSdk = Consts.androidMinSdk
-      targetSdk = Consts.androidTargetSdk
+      minSdk = libs.versions.minSdk.get().toInteger()
+      targetSdk = libs.versions.targetSdk.get().toInteger()
 
-      sourceSets["main"].java.srcDir("src/androidMain/java")
-      sourceSets["main"].jniLibs.srcDir("src/androidMain/jniLibs")
+      sourceSets.named("main") {
+        java.srcDir("src/androidMain/java")
+        jniLibs.srcDir("src/androidMain/jniLibs")
+      }
     }
 
     compileOptions {
-      sourceCompatibility = JavaVersion.VERSION_11
-      targetCompatibility = JavaVersion.VERSION_11
+      sourceCompatibility JavaVersion.toVersion(libs.versions.jvm.get().toInteger())
+      targetCompatibility JavaVersion.toVersion(libs.versions.jvm.get().toInteger())
+    }
+
+    kotlin {
+      jvmToolchain libs.versions.jvm.get().toInteger()
     }
   }
-}
-
-tasks.withType(org.jetbrains.kotlin.gradle.tasks.KotlinCompile) {
-  kotlinOptions.jvmTarget = JavaVersion.VERSION_11
 }

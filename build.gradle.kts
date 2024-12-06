@@ -7,18 +7,27 @@ buildscript {
 }
 
 plugins {
-    //trick: for the same plugin versions in all sub-modules
-    id("com.android.library").version(Consts.agp).apply(false)
-    id("com.android.application").version(Consts.agp).apply(false)
+    alias(libs.plugins.android.library) apply false
+    alias(libs.plugins.android.application) apply false
 
-    kotlin("android").version(Consts.kotlin).apply(false)
-    kotlin("multiplatform").version(Consts.kotlin).apply(false)
+    alias(libs.plugins.kotlin) apply false
+    alias(libs.plugins.compose.compiler) apply false
+    alias(libs.plugins.kmp) apply false
 
-    id("io.codearte.nexus-staging")
+    alias(libs.plugins.nexus)
+    alias(libs.plugins.versions)
+    alias(libs.plugins.versionUpdate)
 }
 
 nexusStaging {
     packageGroup = Consts.releaseGroup
     username = getPropString(project, "ossrhUsername")
     password = getPropString(project, "ossrhPassword")
+}
+
+versionCatalogUpdate {
+    sortByKey = false
+    keep {
+        keepUnusedVersions = true
+    }
 }

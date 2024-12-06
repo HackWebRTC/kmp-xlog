@@ -1,6 +1,8 @@
+source 'https://cdn.cocoapods.org'
+
 target 'iosApp' do
   use_frameworks!
-  platform :ios, '14.1'
+  platform :ios, '14.0'
   pod 'shared', :path => '../shared'
   pod 'kmp_xlog', :path => '../../kmp-xlog/build/cocoapods/publish/release'
   #pod 'kmp_xlog', '~> 1.0.0'

@@ -23,5 +23,5 @@ xcodebuild -create-xcframework -framework cmake_build/iOS/Darwin.out/os/mars.fra
 
 popd
 
-rm -rf kmp-xlog/src/objcCommon/frameworks/mars.xcframework
-cp -r mars/mars/cmake_build/mars.xcframework kmp-xlog/src/objcCommon/frameworks/
+rm -rf kmp-xlog/src/appleMain/frameworks/mars.xcframework
+cp -r mars/mars/cmake_build/mars.xcframework kmp-xlog/src/appleMain/frameworks/

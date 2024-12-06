@@ -95,11 +95,38 @@ pod install
 ### macOS
 
 ```bash
-./build_apple.sh
+./scripts/build_apple.sh
 ./gradlew runKmp_xlogDebugExecutableMacosX64
 ```
 
-## Test
+## Development
+
+### Env Setup
+
+You need install [RVM](https://rvm.io/) to manage your ruby version, and install gems. You need use homebrew to install the following tools:
+
+```bash
+brew install cocoapods xcodegen
+# if you have installed them earlier, you need remove them at first,
+# or run brew link --overwrite xcodegen cocoapods
+```
+
+You may need to restart your system so that Android Studio could use the correct ruby.
+
+### Build MarsXLog
+
+```bash
+# run on macOS
+./scripts/build_xlog_android.sh
+# run on macOS
+./scripts/build_xlog_apple.sh
+# run on Linux
+./scripts/build_xlog_linux.sh
+# run on Windows
+./scripts/build_xlog_windows.bat
+```
+
+### Test
 
 Test shared code on Android unit test:
 
@@ -109,11 +136,12 @@ Test shared code on Android unit test:
 
 Then check reports in `kmp-xlog/build/reports/tests/testDebugUnitTest`.
 
-## Publish
+### Publish
 
-### iOS/macOS cocoapods
+#### iOS/macOS cocoapods
 
 ```bash
+brew install xcodegen
 ./build_apple.sh
 ./publish_apple_cocoapods.sh
 ```

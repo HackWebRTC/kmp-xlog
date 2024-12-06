@@ -1,27 +1,32 @@
-import de.fayard.refreshVersions.core.versionFor
-
 plugins {
-    id("com.android.application")
-    kotlin("android")
+    alias(libs.plugins.android.application)
+    alias(libs.plugins.kotlin)
+    alias(libs.plugins.compose.compiler)
 }
 
 android {
-    namespace = "com.piasy.kmp.xlog.android"
-    compileSdk = Consts.androidCompileSdk
+    namespace = "${Consts.androidNS.replace('_', '.')}.android"
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-        applicationId = "com.piasy.kmp.xlog.android"
-        minSdk = Consts.androidMinSdk
-        targetSdk = Consts.androidTargetSdk
+        applicationId = "${Consts.androidNS.replace('_', '.')}.android"
+        minSdk = libs.versions.minSdk.get().toInt()
+        targetSdk = libs.versions.targetSdk.get().toInt()
         versionCode = 1
-        versionName = "1.0"
+        versionName = Consts.releaseVersion
     }
     buildFeatures {
         compose = true
     }
-    composeOptions {
-        kotlinCompilerExtensionVersion = versionFor(AndroidX.compose.compiler)
+
+    compileOptions {
+        sourceCompatibility = JavaVersion.toVersion(libs.versions.jvm.get().toInt())
+        targetCompatibility = JavaVersion.toVersion(libs.versions.jvm.get().toInt())
     }
-    packagingOptions {
+
+    kotlin {
+        jvmToolchain(libs.versions.jvm.get().toInt())
+    }
+    packaging {
         resources {
             excludes += "/META-INF/{AL2.0,LGPL2.1}"
         }
@@ -35,10 +40,10 @@ android {
 
 dependencies {
     implementation(project(":example:shared"))
-    implementation(AndroidX.compose.ui)
-    implementation(AndroidX.compose.ui.tooling)
-    implementation(AndroidX.compose.ui.toolingPreview)
-    implementation(AndroidX.compose.foundation)
-    implementation(AndroidX.compose.material)
-    implementation(AndroidX.activity.compose)
+    implementation(libs.androidx.compose.ui)
+    implementation(libs.androidx.compose.ui.tooling)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.compose.foundation)
+    implementation(libs.androidx.compose.material)
+    implementation(libs.androidx.activity.compose)
 }
