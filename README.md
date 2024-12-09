@@ -116,7 +116,8 @@ You may need to restart your system so that Android Studio could use the correct
 ### Build MarsXLog
 
 ```bash
-# run on macOS
+# run on macOS, with Android NDK android-ndk-r23d-canary,
+# https://ci.android.com/builds/branches/aosp-ndk-release-r23/grid
 ./scripts/build_xlog_android.sh
 # run on macOS
 ./scripts/build_xlog_apple.sh

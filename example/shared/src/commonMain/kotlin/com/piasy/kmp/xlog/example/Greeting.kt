@@ -7,6 +7,7 @@ class Greeting {
 
   fun greeting(): String {
     Logging.info("XXPXX", "greeting from ${platform.name}")
+    Logging.error("XXPXX", "flush")
 
     return "Hello, ${platform.name}!"
   }

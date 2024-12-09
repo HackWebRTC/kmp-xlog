@@ -64,7 +64,8 @@ kotlin {
   sourceSets {
     commonMain {
       dependencies {
-        implementation("${Consts.releaseGroup}:${Consts.releaseName}:${Consts.releaseVersion}")
+        //implementation("${Consts.releaseGroup}:${Consts.releaseName}:${Consts.releaseVersion}")
+        implementation(project(":kmp-xlog"))
       }
     }
 
