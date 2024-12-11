@@ -85,4 +85,8 @@ cp build/kmp_xlog-macos-arm64-x64 \
 
 popd
 
+pushd kmp-xlog/build/cocoapods/publish/release
+zip -ry kmp_xlog.xcframework.zip kmp_xlog.xcframework
+popd
+
 cp LICENSE kmp-xlog/build/cocoapods/publish/release/
