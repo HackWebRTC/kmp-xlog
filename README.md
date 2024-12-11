@@ -162,10 +162,22 @@ Then check reports in `kmp-xlog/build/reports/tests/testDebugUnitTest`.
 
 ### Publish
 
+Maven central portal credentials and signing configs are set in `~/.gradle/gradle.properties`.
+
+#### Maven publish
+
+```bash
+# on Windows: need manual release on website
+.\script\publish_windows.bat
+# on Linux: need manual release on website
+./script/publish_linux.sh
+# on macOS: no manual release needed
+./script/publish_others.sh
+```
+
 #### iOS/macOS cocoapods
 
 ```bash
-brew install xcodegen
 ./build_apple.sh
 ./publish_apple_cocoapods.sh
 ```

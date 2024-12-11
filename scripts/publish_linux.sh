@@ -1,3 +1,6 @@
 #!/bin/bash
 
-./gradlew publishLinuxX64PublicationToSonatypeRepository closeAndReleaseRepository
+./gradlew clean publishLinuxX64PublicationToMavenCentralRepository
+
+# login to https://central.sonatype.com/publishing/deployments ,
+# and release linux module manually
