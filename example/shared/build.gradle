@@ -61,6 +61,7 @@ kotlin {
     }
   }
 
+  applyDefaultHierarchyTemplate()
   sourceSets {
     commonMain {
       dependencies {
@@ -71,17 +72,17 @@ kotlin {
 
     if (isLinux || isWindows) {
       cppCommon {
-        dependsOn(commonMain.get())
+        dependsOn(commonMain)
       }
 
       if (isLinux) {
         linuxX64Main {
-          dependsOn(cppCommon.get())
+          dependsOn(cppCommon)
         }
       }
       if (isWindows) {
         mingwX64Main {
-          dependsOn(cppCommon.get())
+          dependsOn(cppCommon)
         }
       }
     }

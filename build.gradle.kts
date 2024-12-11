@@ -14,15 +14,10 @@ plugins {
     alias(libs.plugins.compose.compiler) apply false
     alias(libs.plugins.kmp) apply false
 
-    alias(libs.plugins.nexus)
+    alias(libs.plugins.vanniktech.mavenPublish) apply false
+
     alias(libs.plugins.versions)
     alias(libs.plugins.versionUpdate)
-}
-
-nexusStaging {
-    packageGroup = Consts.releaseGroup
-    username = getPropString(project, "ossrhUsername")
-    password = getPropString(project, "ossrhPassword")
 }
 
 versionCatalogUpdate {

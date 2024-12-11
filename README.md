@@ -60,6 +60,38 @@ object Logging {
 }
 ```
 
+## Env Setup
+
+You need install [RVM](https://rvm.io/) to manage your ruby version, and install gems. You need use homebrew to install the following tools:
+
+```bash
+brew install cocoapods xcodegen
+# if you have installed them earlier, you need remove them at first,
+# or run brew link --overwrite xcodegen cocoapods
+```
+
+You may need to restart your system so that Android Studio could use the correct ruby.
+
+If you see "pod install" error when you open the project in Android Studio:
+
+```bash
+> Task :example:shared:podInstall FAILED
+
+FAILURE: Build failed with an exception.
+
+* What went wrong:
+Execution failed for task ':example:shared:podInstall'.
+> 'pod install' command failed with code 1.
+  Error message:
+
+          Please, check that podfile contains following lines in header:
+          source 'https://cdn.cocoapods.org'
+
+          Please, check that each target depended on shared contains following dependencies:
+```
+
+Please run `./scripts/build_apple.sh` then open/sync again.
+
 ## Example
 
 ### Android
@@ -82,7 +114,10 @@ pod install
 
 ### Linux
 
+Install deps: `zlib1g-dev`.
+
 ```bash
+./scripts/build_xlog_linux.sh
 ./gradlew runKmp_xlogDebugExecutableLinuxX64
 ```
 
@@ -100,18 +135,6 @@ pod install
 ```
 
 ## Development
-
-### Env Setup
-
-You need install [RVM](https://rvm.io/) to manage your ruby version, and install gems. You need use homebrew to install the following tools:
-
-```bash
-brew install cocoapods xcodegen
-# if you have installed them earlier, you need remove them at first,
-# or run brew link --overwrite xcodegen cocoapods
-```
-
-You may need to restart your system so that Android Studio could use the correct ruby.
 
 ### Build MarsXLog
 

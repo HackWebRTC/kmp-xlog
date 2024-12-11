@@ -1,11 +1,15 @@
 // Kotlin DSL only supports syntax shortcut for plugin inside plugins block,
 // but plugins block doesn't support `if` syntax, so we have to stay on groovy.
+import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
   alias libs.plugins.kmp
 
-  id "convention.publication"
+  alias libs.plugins.vanniktech.mavenPublish
 }
+
+version = Consts.releaseVersion
+group = Consts.releaseGroup
 
 def hostOs = System.getProperty("os.name")
 def isMacOS = hostOs == "Mac OS X"
@@ -20,7 +24,7 @@ if (isMacOS) {
 kotlin {
   if (isMacOS) {
     androidTarget() {
-      publishLibraryVariants("release", "debug")
+      publishLibraryVariants("release")
     }
 
     [iosArm64(), iosSimulatorArm64(), iosX64(), macosArm64(), macosX64()].forEach { t ->
@@ -71,11 +75,13 @@ kotlin {
             }
           }
         }
+      }
 
-        kotlin.freeCompilerArgs += [
-            "-include-binary",
-            "${project.projectDir}/src/linuxMain/libs/x64/libkmp_xlog.a".toString()
-        ]
+      compilerOptions {
+          freeCompilerArgs.addAll([
+              "-include-binary",
+              "${project.projectDir}/src/linuxMain/libs/x64/libkmp_xlog.a".toString()
+          ])
       }
     }
   }
@@ -189,12 +195,13 @@ kotlin {
     }
   }
 
+  applyDefaultHierarchyTemplate()
   sourceSets {
-    if (isMacOS) {
-      all {
-        languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
-      }
+    all {
+      languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
+    }
 
+    if (isMacOS) {
       androidUnitTest {
         dependencies {
           implementation(libs.kotlin.test)
@@ -212,17 +219,17 @@ kotlin {
 
     if (isLinux || isWindows) {
       cppCommon {
-        dependsOn(commonMain.get())
+        dependsOn(commonMain)
       }
 
       if (isLinux) {
         linuxX64Main {
-          dependsOn(cppCommon.get())
+          dependsOn(cppCommon)
         }
       }
       if (isWindows) {
         mingwX64Main {
-          dependsOn(cppCommon.get())
+          dependsOn(cppCommon)
         }
       }
     }
@@ -252,6 +259,40 @@ if (isMacOS) {
 
     kotlin {
       jvmToolchain libs.versions.jvm.get().toInteger()
+    }
+  }
+}
+
+mavenPublishing {
+  publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+
+  signAllPublications()
+
+  coordinates(group, Consts.releaseName, version)
+
+  pom {
+    name = "kmp-xlog"
+    description = "KMP wrapper for tencent mars xlog."
+    inceptionYear = "2022"
+    url = "https://github.com/HackWebRTC/kmp-xlog"
+    licenses {
+      license {
+        name = "MIT"
+        url = "https://opensource.org/licenses/MIT"
+        distribution = "https://opensource.org/licenses/MIT"
+      }
+    }
+    developers {
+      developer {
+        id = "Piasy"
+        name = "Piasy Xu"
+        url = "xz4215@gmail.com"
+      }
+    }
+    scm {
+      url = "https://github.com/HackWebRTC/kmp-xlog"
+      connection = "scm:git:git://github.com/HackWebRTC/kmp-xlog.git"
+      developerConnection = "scm:git:git://github.com/HackWebRTC/kmp-xlog.git"
     }
   }
 }

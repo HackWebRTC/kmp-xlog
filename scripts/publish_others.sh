@@ -1,7 +1,6 @@
 #!/bin/bash
 
-./gradlew publishAllPublicationsToSonatypeRepository closeAndReleaseRepository
+./gradlew clean publishAndReleaseToMavenCentral --no-configuration-cache
 
-# login to https://s01.oss.sonatype.org/ ,
-# find repository in the 'Staging repositories' section,
-# close it and release it
+# login to https://central.sonatype.com/publishing/deployments ,
+# and check the status
