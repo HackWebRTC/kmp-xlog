@@ -1,6 +1,6 @@
 # kmp-xlog
 
-KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars). [![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.piasy/kmp-xlog/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.piasy/kmp-xlog)
+KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars). ![Maven Central Version](https://img.shields.io/maven-central/v/com.piasy/kmp-xlog)
 
 ## Dependency
 
