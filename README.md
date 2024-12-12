@@ -171,7 +171,7 @@ Maven central portal credentials and signing configs are set in `~/.gradle/gradl
 .\script\publish_windows.bat
 # on Linux: need manual release on website
 ./script/publish_linux.sh
-# on macOS: no manual release needed
+# on macOS: need manual release on website
 ./script/publish_others.sh
 ```
 

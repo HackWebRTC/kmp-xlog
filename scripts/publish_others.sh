@@ -1,6 +1,15 @@
 #!/bin/bash
 
-./gradlew clean publishAndReleaseToMavenCentral --no-configuration-cache
+./gradlew clean \
+    publishKotlinMultiplatformPublicationToMavenCentralRepository \
+    publishAndroidReleasePublicationToMavenCentralRepository \
+    publishIosArm64PublicationToMavenCentralRepository \
+    publishIosSimulatorArm64PublicationToMavenCentralRepository \
+    publishIosX64PublicationToMavenCentralRepository \
+    publishMacosArm64PublicationToMavenCentralRepository \
+    publishMacosX64PublicationToMavenCentralRepository \
+    publishJsPublicationToMavenCentralRepository \
+    --no-configuration-cache
 
 # login to https://central.sonatype.com/publishing/deployments ,
-# and check the status
+# and release them manually

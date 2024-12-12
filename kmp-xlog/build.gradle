@@ -62,6 +62,10 @@ kotlin {
       }
       binaries.executable()
     }
+
+    // to include them in the KotlinMultiplatform module when publishing
+    linuxX64 {}
+    mingwX64 {}
   }
 
   if (isLinux) {
