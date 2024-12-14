@@ -1,7 +1,7 @@
 # https://github.com/Kotlin/multiplatform-library-template/blob/main/.github/workflows/gradle.yml
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: Run kmp-xlog demo.
+name: kmp-xlog build and test.
 
 on:
   push:
