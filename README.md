@@ -1,6 +1,8 @@
 # kmp-xlog
 
-KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars). ![Maven Central Version](https://img.shields.io/maven-central/v/com.piasy/kmp-xlog)
+KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars).
+
+![Maven Central Version](https://img.shields.io/maven-central/v/com.piasy/kmp-xlog) ![Main branch status](https://github.com/HackWebRTC/kmp-xlog/actions/workflows/test_and_run_demo.yml/badge.svg?branch=main)
 
 ## Dependency
 
