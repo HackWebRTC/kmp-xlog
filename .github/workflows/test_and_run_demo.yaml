@@ -16,6 +16,7 @@ permissions:
 jobs:
   build:
     strategy:
+      fail-fast: false
       matrix:
         include:
           - cmd: "${GITHUB_WORKSPACE}/gradlew :kmp-xlog:testDebugUnitTest"
