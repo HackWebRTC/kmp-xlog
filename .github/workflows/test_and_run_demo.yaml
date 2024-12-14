@@ -29,10 +29,10 @@ jobs:
           - cmd: "${GITHUB_WORKSPACE}/scripts/build_xlog_linux.sh && ${GITHUB_WORKSPACE}/gradlew runKmp_xlogDebugExecutableLinuxX64"
             os: ubuntu-latest
             dep: "sudo apt-get update && sudo apt-get install zlib1g-dev"
-          - cmd: "${GITHUB_WORKSPACE}/gradlew runKmp_xlogDebugExecutableMingwX64"
+          - cmd: "${GITHUB_WORKSPACE}\gradlew runKmp_xlogDebugExecutableMingwX64"
             os: windows-latest
           - cmd: "${GITHUB_WORKSPACE}/gradlew :example:shared:jsBrowserDistribution"
-            os: ubuntu-latest
+            os: macos-latest
     runs-on: ${{ matrix.os }}
 
     steps:
