@@ -147,7 +147,9 @@ Install deps: `zlib1g-dev`.
 # run on Linux
 ./scripts/build_xlog_linux.sh
 # run on Windows
-./scripts/build_xlog_windows.bat
+#.\scripts\build_xlog_windows.bat
+# Windows xlog source is compiled by gradle,
+# no need to build it manually.
 ```
 
 ### Test
