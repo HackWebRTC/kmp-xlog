@@ -92,7 +92,7 @@ Execution failed for task ':example:shared:podInstall'.
           Please, check that each target depended on shared contains following dependencies:
 ```
 
-Please run `./scripts/build_apple.sh` then open/sync again.
+This is because `iosApp/Podfile` depends on the podspec in `../../kmp-xlog/build/cocoapods/publish/release`, so please run `./scripts/build_apple.sh` and open/sync again.
 
 ## Example
 
