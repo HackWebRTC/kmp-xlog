@@ -1,18 +1,17 @@
-// Kotlin DSL only supports syntax shortcut for plugin inside plugins block,
-// but plugins block doesn't support `if` syntax, so we have to stay on groovy.
 plugins {
-  alias libs.plugins.kmp
+  alias(libs.plugins.kmp)
+
+  if (System.getProperty("os.name") == "Mac OS X") {
+    alias(libs.plugins.android.library)
+    // alias will fail, see https://github.com/gradle/gradle/issues/20084
+    id("org.jetbrains.kotlin.native.cocoapods")
+  }
 }
 
-def hostOs = System.getProperty("os.name")
-def isMacOS = hostOs == "Mac OS X"
-def isWindows = hostOs.startsWith("Windows")
-def isLinux = hostOs == "Linux"
-
-if (isMacOS) {
-  apply plugin: "com.android.library"
-  apply plugin: "org.jetbrains.kotlin.native.cocoapods"
-}
+val hostOs = System.getProperty("os.name")
+val isMacOS = hostOs == "Mac OS X"
+val isWindows = hostOs.startsWith("Windows")
+val isLinux = hostOs == "Linux"
 
 kotlin {
   if (isMacOS) {
@@ -21,14 +20,14 @@ kotlin {
     iosX64()
     iosArm64()
     iosSimulatorArm64()
-    macosX64() {
+    macosX64 {
       binaries {
         executable("kmp_xlog") {
           entryPoint = "com.piasy.kmp.xlog.example.main"
-          linkerOpts = [
-                  "-F${rootProject.projectDir}/kmp-xlog/build/cocoapods/publish/release/kmp_xlog.xcframework/macos-arm64_x86_64".toString(),
+          linkerOpts = mutableListOf(
+                  "-F${rootProject.projectDir}/kmp-xlog/build/cocoapods/publish/release/kmp_xlog.xcframework/macos-arm64_x86_64",
                   "-framework", "kmp_xlog", "-lz",
-          ]
+          )
         }
       }
     }
@@ -53,7 +52,7 @@ kotlin {
   }
 
   if (isLinux || isWindows) {
-    def nativeTarget = isLinux ? linuxX64() : mingwX64()
+    val nativeTarget = if(isLinux) linuxX64() else mingwX64()
     nativeTarget.binaries {
       executable("kmp_xlog") {
         entryPoint = "com.piasy.kmp.xlog.example.main"
@@ -71,8 +70,8 @@ kotlin {
     }
 
     if (isLinux || isWindows) {
-      cppCommon {
-        dependsOn(commonMain)
+      val cppCommon by creating {
+        dependsOn(commonMain.get())
       }
 
       if (isLinux) {
@@ -92,19 +91,18 @@ kotlin {
 if (isMacOS) {
   android {
     namespace = "${Consts.androidNS}.android"
-    compileSdk = libs.versions.compileSdk.get().toInteger()
+    compileSdk = libs.versions.compileSdk.get().toInt()
     defaultConfig {
-      minSdk = libs.versions.minSdk.get().toInteger()
-      targetSdk = libs.versions.targetSdk.get().toInteger()
+      minSdk = libs.versions.minSdk.get().toInt()
     }
 
     compileOptions {
-      sourceCompatibility JavaVersion.toVersion(libs.versions.jvm.get().toInteger())
-      targetCompatibility JavaVersion.toVersion(libs.versions.jvm.get().toInteger())
+      sourceCompatibility = JavaVersion.toVersion(libs.versions.jvm.get().toInt())
+      targetCompatibility = JavaVersion.toVersion(libs.versions.jvm.get().toInt())
     }
 
     kotlin {
-      jvmToolchain libs.versions.jvm.get().toInteger()
+      jvmToolchain(libs.versions.jvm.get().toInt())
     }
   }
 }

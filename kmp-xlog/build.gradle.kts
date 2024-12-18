@@ -1,38 +1,36 @@
-// Kotlin DSL only supports syntax shortcut for plugin inside plugins block,
-// but plugins block doesn't support `if` syntax, so we have to stay on groovy.
 import com.vanniktech.maven.publish.SonatypeHost
 
 plugins {
-  alias libs.plugins.kmp
+  alias(libs.plugins.kmp)
+  alias(libs.plugins.vanniktech.mavenPublish)
 
-  alias libs.plugins.vanniktech.mavenPublish
+  if (System.getProperty("os.name") == "Mac OS X") {
+    alias(libs.plugins.android.library)
+    // alias will fail, see https://github.com/gradle/gradle/issues/20084
+    id("org.jetbrains.kotlin.native.cocoapods")
+  }
 }
 
 version = Consts.releaseVersion
 group = Consts.releaseGroup
 
-def hostOs = System.getProperty("os.name")
-def isMacOS = hostOs == "Mac OS X"
-def isWindows = hostOs.startsWith("Windows")
-def isLinux = hostOs == "Linux"
-
-if (isMacOS) {
-  apply plugin: "com.android.library"
-  apply plugin: "org.jetbrains.kotlin.native.cocoapods"
-}
+val hostOs = System.getProperty("os.name")
+val isMacOS = hostOs == "Mac OS X"
+val isWindows = hostOs.startsWith("Windows")
+val isLinux = hostOs == "Linux"
 
 kotlin {
   if (isMacOS) {
-    androidTarget() {
+    androidTarget {
       publishLibraryVariants("release")
     }
 
-    [iosArm64(), iosSimulatorArm64(), iosX64(), macosArm64(), macosX64()].forEach { t ->
-      t.compilations.main.cinterops {
-        xlog {
-          defFile "src/appleMain/cinterop/xlog.def"
+    listOf(iosArm64(), iosSimulatorArm64(), iosX64(), macosArm64(), macosX64()).forEach {
+      it.compilations.getByName("main").cinterops {
+        val xlog by creating {
+          defFile("src/appleMain/cinterop/xlog.def")
           includeDirs {
-            allHeaders "${project.projectDir}/src/appleMain/objc"
+            allHeaders("${project.projectDir}/src/appleMain/objc")
           }
         }
       }
@@ -53,7 +51,6 @@ kotlin {
       framework {
         baseName = "kmp_xlog"
         isStatic = true
-        embedBitcode("disable")
       }
     }
 
@@ -70,32 +67,32 @@ kotlin {
 
   if (isLinux) {
     linuxX64 {
-      compilations.main {
+      compilations.getByName("main") {
         cinterops {
-          xlog {
-            defFile "src/cppCommon/cinterop/xlog.def"
+          val xlog by creating {
+            defFile("src/cppCommon/cinterop/xlog.def")
             includeDirs {
-              allHeaders "${project.projectDir}/src/cppCommon/cpp"
+              allHeaders("${project.projectDir}/src/cppCommon/cpp")
             }
           }
         }
       }
 
       compilerOptions {
-          freeCompilerArgs.addAll([
-              "-include-binary",
-              "${project.projectDir}/src/linuxMain/libs/x64/libkmp_xlog.a".toString()
-          ])
+        freeCompilerArgs.addAll(listOf(
+          "-include-binary",
+          "${project.projectDir}/src/linuxMain/libs/x64/libkmp_xlog.a"
+        ))
       }
     }
   }
 
   if (isWindows) {
     mingwX64 {
-      compilations.main {
+      compilations.getByName("main") {
         cinterops {
-          zlib {
-            defFile "src/cppCommon/cinterop/zlib.def"
+          val zlib by creating {
+            defFile("src/cppCommon/cinterop/zlib.def")
             extraOpts(
               "-Xsource-compiler-option", "-xc",
               "-Xsource-compiler-option", "-I${rootProject.projectDir}/mars/mars/zstd/lib",
@@ -146,10 +143,10 @@ kotlin {
               "-Xcompile-source", "${rootProject.projectDir}/mars/mars/zstd/lib/dictBuilder/zdict.c",
             )
           }
-          xlog {
-            defFile "src/cppCommon/cinterop/xlog.def"
+          val xlog by creating {
+            defFile("src/cppCommon/cinterop/xlog.def")
             includeDirs {
-              allHeaders "${project.projectDir}/src/cppCommon/cpp"
+              allHeaders("${project.projectDir}/src/cppCommon/cpp")
             }
             extraOpts(
               "-Xsource-compiler-option", "-I${rootProject.projectDir}/mars",
@@ -222,8 +219,8 @@ kotlin {
     }
 
     if (isLinux || isWindows) {
-      cppCommon {
-        dependsOn(commonMain)
+      val cppCommon by creating {
+        dependsOn(commonMain.get())
       }
 
       if (isLinux) {
@@ -242,27 +239,26 @@ kotlin {
 
 if (isMacOS) {
   android {
-    compileSdk = libs.versions.compileSdk.get().toInteger()
+    compileSdk = libs.versions.compileSdk.get().toInt()
     ndkVersion = libs.versions.ndk.get()
     namespace = Consts.androidNS
 
     defaultConfig {
-      minSdk = libs.versions.minSdk.get().toInteger()
-      targetSdk = libs.versions.targetSdk.get().toInteger()
+      minSdk = libs.versions.minSdk.get().toInt()
 
-      sourceSets.named("main") {
+      sourceSets.getByName("main") {
         java.srcDir("src/androidMain/java")
         jniLibs.srcDir("src/androidMain/jniLibs")
       }
     }
 
     compileOptions {
-      sourceCompatibility JavaVersion.toVersion(libs.versions.jvm.get().toInteger())
-      targetCompatibility JavaVersion.toVersion(libs.versions.jvm.get().toInteger())
+      sourceCompatibility = JavaVersion.toVersion(libs.versions.jvm.get().toInt())
+      targetCompatibility = JavaVersion.toVersion(libs.versions.jvm.get().toInt())
     }
 
     kotlin {
-      jvmToolchain libs.versions.jvm.get().toInteger()
+      jvmToolchain(libs.versions.jvm.get().toInt())
     }
   }
 }
@@ -272,7 +268,7 @@ mavenPublishing {
 
   signAllPublications()
 
-  coordinates(group, Consts.releaseName, version)
+  coordinates(group.toString(), Consts.releaseName, version.toString())
 
   pom {
     name = "kmp-xlog"
