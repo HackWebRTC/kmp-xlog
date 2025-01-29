@@ -9,6 +9,7 @@
     publishMacosArm64PublicationToMavenCentralRepository \
     publishMacosX64PublicationToMavenCentralRepository \
     publishJsPublicationToMavenCentralRepository \
+    publishJvmPublicationToMavenCentralRepository \
     --no-configuration-cache
 
 # login to https://central.sonatype.com/publishing/deployments ,

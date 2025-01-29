@@ -13,6 +13,7 @@ version = Consts.releaseVersion
 group = Consts.releaseGroup
 
 kotlin {
+    jvm()
     androidTarget {
         publishLibraryVariants("release")
     }
