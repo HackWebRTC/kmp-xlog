@@ -1,5 +1,6 @@
 package com.piasy.kmp.xlog
 
+import kotlinx.datetime.Clock
 import kotlin.math.min
 
 /**
@@ -11,7 +12,19 @@ object Logging {
   const val LEVEL_ERROR = 4
 
   internal const val LINE_LENGTH = 4000
-  private var impl: LoggingImpl? = null
+  private var impl: LoggingImpl = object : LoggingImpl {
+    override fun debug(tag: String, content: String) {
+      println("${Clock.System.now().toEpochMilliseconds()} D $tag $content")
+    }
+
+    override fun info(tag: String, content: String) {
+      println("${Clock.System.now().toEpochMilliseconds()} I $tag $content")
+    }
+
+    override fun error(tag: String, content: String) {
+      println("${Clock.System.now().toEpochMilliseconds()} E $tag $content")
+    }
+  }
 
   internal fun init(impl: LoggingImpl) {
     this.impl = impl
@@ -19,19 +32,19 @@ object Logging {
 
   fun debug(tag: String, content: String) {
     log(tag, content) { t, c ->
-      impl?.debug(t, c)
+      impl.debug(t, c)
     }
   }
 
   fun info(tag: String, content: String) {
     log(tag, content) { t, c ->
-      impl?.info(t, c)
+      impl.info(t, c)
     }
   }
 
   fun error(tag: String, content: String) {
     log(tag, content) { t, c ->
-      impl?.error(t, c)
+      impl.error(t, c)
     }
   }
 

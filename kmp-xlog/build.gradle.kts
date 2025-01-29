@@ -192,6 +192,12 @@ kotlin {
             languageSettings.optIn("kotlinx.cinterop.ExperimentalForeignApi")
         }
 
+        commonMain {
+            dependencies {
+                implementation(libs.kotlinx.datetime)
+            }
+        }
+
         androidUnitTest {
             dependencies {
                 implementation(libs.kotlin.test)
