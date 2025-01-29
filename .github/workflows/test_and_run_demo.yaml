@@ -27,7 +27,7 @@ jobs:
             os: macos-latest
             dep: "brew update && brew install xcodegen"
           - cmd: "${GITHUB_WORKSPACE}/scripts/build_xlog_linux.sh && ${GITHUB_WORKSPACE}/gradlew runKmp_xlogDebugExecutableLinuxX64"
-            os: ubuntu-latest
+            os: ubuntu-22.04
             dep: "sudo apt-get update && sudo apt-get install zlib1g-dev"
           - cmd: "%GITHUB_WORKSPACE%\\gradlew runKmp_xlogDebugExecutableMingwX64"
             os: windows-latest
