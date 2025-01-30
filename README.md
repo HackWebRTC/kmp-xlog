@@ -114,6 +114,12 @@ pod install
 ./gradlew :example:shared:jsBrowserRun
 ```
 
+### WASM JS
+
+```bash
+./gradlew :example:shared:wasmJsBrowserRun
+```
+
 ### Linux
 
 Install deps: `zlib1g-dev`.
