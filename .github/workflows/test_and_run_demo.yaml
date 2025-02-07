@@ -33,6 +33,8 @@ jobs:
             os: windows-latest
           - cmd: "${GITHUB_WORKSPACE}/gradlew :example:shared:jsBrowserDistribution"
             os: macos-latest
+          - cmd: "${GITHUB_WORKSPACE}/gradlew :example:shared:wasmJsBrowserDistribution"
+            os: macos-latest
     runs-on: ${{ matrix.os }}
 
     steps:

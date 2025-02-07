@@ -4,9 +4,22 @@ KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars).
 
 ![Maven Central Version](https://img.shields.io/maven-central/v/com.piasy/kmp-xlog) ![Main branch status](https://github.com/HackWebRTC/kmp-xlog/actions/workflows/test_and_run_demo.yaml/badge.svg?branch=main)
 
+## Supported platforms
+
+|      Platform      | 🛠Builds🛠 + 🔬Tests🔬 |
+| :----------------: | :------------------: |
+|      `JVM` 17      |          🚀          |
+| `Browser` (Chrome) |          🚀          |
+| `wasmJs` (Chrome)  |          🚀          |
+|     `Android`      |          🚀          |
+|       `iOS`        |          🚀          |
+|      `macOS`       |          🚀          |
+|   `Windows X64`    |          🚀          |
+|    `Linux X64`     |          🚀          |
+
 ## Dependency
 
-For Android/JS/Linux/Windows, you only need to add gradle dependency, for iOS/macOS you need add an extra cocoapods dependency.
+For Android/JS/Linux/Windows, you only need to add gradle dependency, for iOS/macOS you need to add an extra cocoapods dependency.
 
 ```kotlin
 // add common source set dependency
@@ -64,11 +77,11 @@ object Logging {
 
 ## Env Setup
 
-You need install [RVM](https://rvm.io/) to manage your ruby version, and install gems. You need use homebrew to install the following tools:
+You need to install [RVM](https://rvm.io/) to manage your ruby version, and install gems. You need to use homebrew to install the following tools:
 
 ```bash
 brew install cocoapods xcodegen
-# if you have installed them earlier, you need remove them at first,
+# if you have installed them earlier, you need to remove them at first,
 # or run brew link --overwrite xcodegen cocoapods
 ```
 
