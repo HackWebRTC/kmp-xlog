@@ -3,5 +3,5 @@ object Consts {
   const val releaseName = "kmp-xlog"
   const val releaseVersion = "1.3.1"
 
-  val androidNS = "$releaseGroup.${releaseName.replace('-', '_')}"
+  val androidNS = "$releaseGroup.${releaseName.replace('-', '.')}"
 }

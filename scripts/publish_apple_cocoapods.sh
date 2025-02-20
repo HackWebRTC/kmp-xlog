@@ -5,7 +5,8 @@ set -e
 # Run command below:
 # pod trunk register 'xz4215@gmail.com' 'kmp_xlog'
 # then open email to verify the register.
-# Then create GitHub release with zip asset located in:
+# Then run `./scripts/build_apple.sh`,
+# then create GitHub release with zip asset located in:
 # kmp-xlog/build/cocoapods/publish/release/kmp_xlog.xcframework.zip
 
 pushd kmp-xlog/build/cocoapods/publish/release
