@@ -117,6 +117,7 @@ Open the project (the repo root dir) in Android studio, and run the example.andr
 
 ```bash
 cd example/iosApp
+xcodegen
 pod install
 # open iosApp.xcworkspace in Xcode, and run it.
 ```
@@ -150,9 +151,20 @@ Install deps: `zlib1g-dev`.
 
 ### macOS
 
+Test in command line:
+
 ```bash
 ./scripts/build_apple.sh
 ./gradlew runKmp_xlogDebugExecutableMacosX64
+```
+
+Test in GUI:
+
+```bash
+cd example/macApp
+xcodegen
+pod install
+# open macApp.xcworkspace in Xcode, and run it.
 ```
 
 ## Development

@@ -1,0 +1,14 @@
+name: macApp
+targets:
+  macApp:
+    type: application
+    platform: macOS
+    deploymentTarget: "11.0"
+    sources:
+      - path: macApp
+    settings:
+      LIBRARY_SEARCH_PATHS: "$(inherited)"
+      OTHER_LDFLAGS: "$(inherited)"
+      FRAMEWORK_SEARCH_PATHS: "$(inherited)"
+      CLANG_WARN_DOCUMENTATION_COMMENTS: "NO"
+      ASSETCATALOG_COMPILER_APPICON_NAME: "AppIcon"

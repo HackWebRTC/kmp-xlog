@@ -1,0 +1,7 @@
+source 'https://cdn.cocoapods.org'
+
+target 'macApp' do
+  use_frameworks!
+  platform :osx, '11.0'
+  pod 'kmp_xlog', :path => '../../kmp-xlog/build/cocoapods/publish/release'
+end

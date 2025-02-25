@@ -1,5 +1,4 @@
 import com.vanniktech.maven.publish.SonatypeHost
-import org.gradle.internal.os.OperatingSystem;
 
 plugins {
     alias(libs.plugins.kmp)
@@ -35,6 +34,7 @@ kotlin {
         homepage = "https://github.com/HackWebRTC/kmp-xlog"
         version = Consts.releaseVersion
         ios.deploymentTarget = libs.versions.iosDeploymentTarget.get()
+        osx.deploymentTarget = "11.0"
 
         license = "{ :type => 'MIT', :file => 'LICENSE'}"
         source = "{ :http => '$homepage/releases/download/v$version/kmp_xlog.xcframework.zip' }"
