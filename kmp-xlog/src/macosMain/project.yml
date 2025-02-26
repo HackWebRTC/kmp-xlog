@@ -3,7 +3,7 @@ targets:
   kmp_xlog:
     type: library.static
     platform: macOS
-    deploymentTarget: "14.0"
+    deploymentTarget: "11.0"
     sources:
       - path: ../appleMain/objc
     dependencies:

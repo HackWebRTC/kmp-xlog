@@ -203,16 +203,16 @@ Maven central portal credentials and signing configs are set in `~/.gradle/gradl
 
 ```bash
 # on Windows: need manual release on website
-.\script\publish_windows.bat
+.\scripts\publish_windows.bat
 # on Linux: need manual release on website
-./script/publish_linux.sh
+./scripts/publish_linux.sh
 # on macOS: need manual release on website
-./script/publish_others.sh
+./scripts/publish_others.sh
 ```
 
 #### iOS/macOS cocoapods
 
 ```bash
-./build_apple.sh
-./publish_apple_cocoapods.sh
+./scripts/build_apple.sh
+./scripts/publish_apple_cocoapods.sh
 ```
