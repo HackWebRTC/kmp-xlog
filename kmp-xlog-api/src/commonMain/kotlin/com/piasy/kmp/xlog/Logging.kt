@@ -11,7 +11,7 @@ object Logging {
   const val LEVEL_INFO = 2
   const val LEVEL_ERROR = 4
 
-  internal const val LINE_LENGTH = 4000
+  const val LINE_LENGTH = 4000
   private var impl: LoggingImpl = object : LoggingImpl {
     override fun debug(tag: String, content: String) {
       println("${Clock.System.now().toEpochMilliseconds()} D $tag $content")
