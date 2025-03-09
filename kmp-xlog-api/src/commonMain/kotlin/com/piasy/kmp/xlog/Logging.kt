@@ -26,7 +26,7 @@ object Logging {
     }
   }
 
-  internal fun init(impl: LoggingImpl) {
+  fun init(impl: LoggingImpl) {
     this.impl = impl
   }
 
@@ -70,7 +70,7 @@ object Logging {
   }
 }
 
-internal interface LoggingImpl {
+interface LoggingImpl {
   fun debug(tag: String, content: String)
 
   fun info(tag: String, content: String)

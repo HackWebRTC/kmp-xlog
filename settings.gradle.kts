@@ -15,6 +15,7 @@ dependencyResolutionManagement {
 }
 
 rootProject.name = "kmp-xlog"
+include(":kmp-xlog-api")
 include(":kmp-xlog")
 
 include(":example:shared")

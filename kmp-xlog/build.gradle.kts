@@ -53,15 +53,12 @@ kotlin {
         }
         binaries.executable()
     }
+    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
     wasmJs {
         browser {
         }
         binaries.executable()
     }
-
-    // to include them in the KotlinMultiplatform module when publishing
-    linuxX64 {}
-    mingwX64 {}
 
     linuxX64 {
         compilations.getByName("main") {
@@ -201,7 +198,7 @@ kotlin {
 
         commonMain {
             dependencies {
-                implementation(libs.kotlinx.datetime)
+                api(project(":kmp-xlog-api"))
             }
         }
 

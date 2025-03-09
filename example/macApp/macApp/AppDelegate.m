@@ -22,7 +22,7 @@
                                     styleMask:NSWindowStyleMaskTitled | NSWindowStyleMaskClosable | NSWindowStyleMaskMiniaturizable | NSWindowStyleMaskResizable
                                       backing:NSBackingStoreBuffered
                                         defer:NO];
-    self.mainWindow.title = @"kmp-webrtc";
+    self.mainWindow.title = @"kmp-xlog";
 
     self.viewController = [[ViewController alloc] initWithNibName:nil bundle:nil];
     self.mainWindow.contentView = self.viewController.view;
