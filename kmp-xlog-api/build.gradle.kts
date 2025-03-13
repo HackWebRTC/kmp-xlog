@@ -1,4 +1,5 @@
 import com.vanniktech.maven.publish.SonatypeHost
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kmp)
@@ -17,16 +18,11 @@ kotlin {
     macosArm64()
     macosX64()
 
-    js(IR) {
-        browser {
+    @OptIn(ExperimentalWasmDsl::class)
+    listOf(js(IR), wasmJs()).forEach {
+        it.browser {
         }
-        binaries.executable()
-    }
-    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
-    wasmJs {
-        browser {
-        }
-        binaries.executable()
+        it.binaries.executable()
     }
 
     linuxX64()
