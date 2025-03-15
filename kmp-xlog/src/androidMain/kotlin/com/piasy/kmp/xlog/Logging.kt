@@ -10,38 +10,43 @@ import com.tencent.mars.xlog.Xlog
 private var sInitialized = false
 
 fun initializeMarsXLog(
-  context: Context,
-  logDir: String,
-  level: Int,
-  namePrefix: String,
-  logToConsole: Boolean
+    context: Context,
+    logDir: String,
+    level: Int,
+    namePrefix: String,
+    debugLog: Boolean
 ) {
-  if (sInitialized) {
-    return
-  }
+    if (sInitialized) {
+        return
+    }
 
-  // this is necessary, or may cash for SIGBUS
-  val cachePath = context.filesDir.toString() + "/xlog"
-  Xlog.open(true, level, Xlog.AppednerModeAsync, cachePath, logDir, namePrefix, "")
-  Log.setLogImp(Xlog())
-  Log.setConsoleLogOpen(logToConsole)
+    // this is necessary, or may cash for SIGBUS
+    val cachePath = context.filesDir.toString() + "/xlog"
+    Xlog.open(true, level, Xlog.AppednerModeAsync, cachePath, logDir, namePrefix, "")
+    Log.setLogImp(Xlog())
+    Log.setConsoleLogOpen(debugLog)
 
-  Logging.init(AndroidLogging)
+    AndroidLogging.debugLog = debugLog
+    Logging.init(AndroidLogging)
 
-  sInitialized = true
+    sInitialized = true
 }
 
 private object AndroidLogging : LoggingImpl {
-  override fun debug(tag: String, content: String) {
-    Log.d(tag, "${Thread.currentThread().name} # $content")
-  }
+    var debugLog: Boolean = false
 
-  override fun info(tag: String, content: String) {
-    Log.i(tag, "${Thread.currentThread().name} # $content")
-  }
+    override fun debug() = debugLog
 
-  override fun error(tag: String, content: String) {
-    Log.e(tag, "${Thread.currentThread().name} # $content")
-    Log.appenderFlush()
-  }
+    override fun debug(tag: String, content: String) {
+        Log.d(tag, "${Thread.currentThread().name} # $content")
+    }
+
+    override fun info(tag: String, content: String) {
+        Log.i(tag, "${Thread.currentThread().name} # $content")
+    }
+
+    override fun error(tag: String, content: String) {
+        Log.e(tag, "${Thread.currentThread().name} # $content")
+        Log.appenderFlush()
+    }
 }

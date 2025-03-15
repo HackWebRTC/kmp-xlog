@@ -43,18 +43,13 @@ kotlin {
         extraSpecAttributes["libraries"] = "'z'"
         extraSpecAttributes["framework"] = "'SystemConfiguration'"
         framework {
+            export(project(":kmp-xlog-api"))
             baseName = "kmp_xlog"
             isStatic = true
         }
     }
 
     js(IR) {
-        browser {
-        }
-        binaries.executable()
-    }
-    @OptIn(org.jetbrains.kotlin.gradle.ExperimentalWasmDsl::class)
-    wasmJs {
         browser {
         }
         binaries.executable()

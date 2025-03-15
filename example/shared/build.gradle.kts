@@ -1,5 +1,3 @@
-import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
-
 plugins {
     alias(libs.plugins.kmp)
 
@@ -43,12 +41,6 @@ kotlin {
         }
         binaries.executable()
     }
-    @OptIn(ExperimentalWasmDsl::class)
-    wasmJs {
-        browser {
-        }
-        binaries.executable()
-    }
 
     listOf(linuxX64(), mingwX64()).forEach {
         it.binaries {
@@ -76,11 +68,6 @@ kotlin {
         }
         mingwX64Main {
             dependsOn(cppCommon)
-        }
-        wasmJsMain {
-            dependencies {
-                implementation(libs.kotlinx.browser)
-            }
         }
     }
 }
