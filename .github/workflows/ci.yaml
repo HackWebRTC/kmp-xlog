@@ -1,7 +1,7 @@
 # https://github.com/Kotlin/multiplatform-library-template/blob/main/.github/workflows/gradle.yml
 # https://docs.github.com/en/actions/automating-builds-and-tests/building-and-testing-java-with-gradle
 
-name: kmp-xlog build and test.
+name: CI
 
 on:
   push:
@@ -19,22 +19,20 @@ jobs:
       fail-fast: false
       matrix:
         include:
-          - cmd: "${GITHUB_WORKSPACE}/gradlew :kmp-xlog:testDebugUnitTest"
-            os: macos-latest
-          - cmd: "${GITHUB_WORKSPACE}/gradlew :example:androidApp:assembleDebug"
-            os: macos-latest
-          - cmd: "${GITHUB_WORKSPACE}/scripts/build_apple.sh && ${GITHUB_WORKSPACE}/gradlew runKmp_xlogDebugExecutableMacosX64"
-            os: macos-latest
+          - os: macos-latest
+            cmd: "./gradlew :kmp-xlog:testDebugUnitTest"
+          - os: macos-latest
+            cmd: "./gradlew :example:androidApp:assembleDebug"
+          - os: macos-latest
             dep: "brew update && brew install xcodegen"
-          - cmd: "${GITHUB_WORKSPACE}/scripts/build_xlog_linux.sh && ${GITHUB_WORKSPACE}/gradlew runKmp_xlogDebugExecutableLinuxX64"
-            os: ubuntu-22.04
+            cmd: "./scripts/build_apple.sh && ./gradlew runKmp_xlogDebugExecutableMacosX64 && ./scripts/build_mac_demo.sh && ./scripts/build_ios_demo.sh"
+          - os: ubuntu-22.04
             dep: "sudo apt-get update && sudo apt-get install zlib1g-dev"
-          - cmd: "%GITHUB_WORKSPACE%\\gradlew runKmp_xlogDebugExecutableMingwX64"
-            os: windows-latest
-          - cmd: "${GITHUB_WORKSPACE}/gradlew :example:shared:jsBrowserDistribution"
-            os: macos-latest
-          - cmd: "${GITHUB_WORKSPACE}/gradlew :example:shared:wasmJsBrowserDistribution"
-            os: macos-latest
+            cmd: "./scripts/build_xlog_linux.sh && ./gradlew runKmp_xlogDebugExecutableLinuxX64"
+          - os: windows-latest
+            cmd: "./gradlew runKmp_xlogDebugExecutableMingwX64"
+          - os: macos-latest
+            cmd: "./gradlew :example:shared:jsBrowserDistribution"
     runs-on: ${{ matrix.os }}
 
     steps:
@@ -54,10 +52,8 @@ jobs:
         cache: 'gradle'
     - name: Setup Gradle
       uses: gradle/actions/setup-gradle@v3
-    - if: ${{ matrix.dep }}
+    - name: Install deps
+      if: ${{ matrix.dep }}
       run: ${{ matrix.dep }}
-    - if: ${{ matrix.os == 'windows-latest' }}
-      shell: cmd
-      run: ${{ matrix.cmd }}
-    - if: ${{ matrix.os != 'windows-latest' }}
+    - name: Run it
       run: ${{ matrix.cmd }}

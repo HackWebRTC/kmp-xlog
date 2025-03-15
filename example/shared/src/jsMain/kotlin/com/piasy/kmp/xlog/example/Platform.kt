@@ -10,7 +10,7 @@ class JsPlatform : Platform {
 actual fun getPlatform(): Platform = JsPlatform()
 
 fun main() {
-  initializeConsoleLog()
+  initializeConsoleLog(true)
 
   document.getElementById("text")?.innerHTML = Greeting().greeting()
 }

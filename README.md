@@ -2,7 +2,7 @@
 
 KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars).
 
-![Maven Central Version](https://img.shields.io/maven-central/v/com.piasy/kmp-xlog) ![Main branch status](https://github.com/HackWebRTC/kmp-xlog/actions/workflows/test_and_run_demo.yaml/badge.svg?branch=main)
+![Maven Central Version](https://img.shields.io/maven-central/v/com.piasy/kmp-xlog) ![Main branch status](https://github.com/HackWebRTC/kmp-xlog/actions/workflows/ci.yaml/badge.svg?branch=main)
 
 ## Supported platforms
 
@@ -10,7 +10,6 @@ KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars).
 | :----------------: | :------------------: |
 |      `JVM` 17      |          🚀          |
 | `JS`     (Chrome)  |          🚀          |
-| `WasmJS` (Chrome)  |          🚀          |
 |     `Android`      |          🚀          |
 |       `iOS`        |          🚀          |
 |      `macOS`       |          🚀          |
@@ -126,12 +125,6 @@ pod install
 
 ```bash
 ./gradlew :example:shared:jsBrowserRun
-```
-
-### WASM JS
-
-```bash
-./gradlew :example:shared:wasmJsBrowserRun
 ```
 
 ### Linux
