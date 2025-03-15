@@ -32,6 +32,8 @@ object Logging {
         this.impl = impl
     }
 
+    fun debug() = impl.debug()
+
     fun debug(tag: String, content: String) {
         log(tag, content) { t, c ->
             impl.debug(t, c)
