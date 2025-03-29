@@ -51,18 +51,18 @@ fun initializeMarsXLog(
   logDir: String,
   level: Int,
   namePrefix: String,
-  logToConsole: Boolean
+  debugLog: Boolean
 )
 
 // iOS/macOS/Linux/Windows initialize
 fun initializeMarsXLog(
   level: Int,
   namePrefix: String,
-  logToConsole: Boolean
+  debugLog: Boolean
 )
 
 // JS initialize
-fun initializeConsoleLog()
+fun initializeConsoleLog(debugLog: Boolean)
 
 // logging
 object Logging {
