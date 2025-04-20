@@ -21,8 +21,9 @@ jobs:
         include:
           - os: macos-latest
             cmd: "./gradlew :kmp-xlog:testDebugUnitTest"
-          - os: macos-latest
-            cmd: "./gradlew :example:androidApp:assembleDebug"
+          - os: ubuntu-latest
+            androidEmulator: true
+            cmd: "./gradlew :example:androidApp:connectedCheck"
           - os: macos-latest
             dep: "brew update && brew install xcodegen"
             cmd: "./scripts/build_apple.sh && ./gradlew runKmp_xlogDebugExecutableMacosX64 && ./scripts/build_mac_demo.sh && ./scripts/build_ios_demo.sh"
@@ -55,5 +56,11 @@ jobs:
     - name: Install deps
       if: ${{ matrix.dep }}
       run: ${{ matrix.dep }}
+    - name: Enable KVM for Android Emulator
+      if: ${{ matrix.androidEmulator }}
+      run: |
+        echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
+        sudo udevadm control --reload-rules
+        sudo udevadm trigger --name-match=kvm
     - name: Run it
       run: ${{ matrix.cmd }}

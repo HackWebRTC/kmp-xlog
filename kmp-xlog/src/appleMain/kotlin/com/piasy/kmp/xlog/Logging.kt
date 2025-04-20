@@ -6,11 +6,10 @@ package com.piasy.kmp.xlog
 fun initializeMarsXLog(
     level: Int,
     namePrefix: String,
-    debugLog: Boolean
 ) {
-    xlog.PSYMarsXLog.initialize(level, namePrefix, debugLog)
+    AppleLogging.debugLog = level == Logging.LEVEL_DEBUG
+    xlog.PSYMarsXLog.initialize(level, namePrefix, AppleLogging.debugLog)
 
-    AppleLogging.debugLog = debugLog
     Logging.init(AppleLogging)
 }
 

@@ -11,6 +11,6 @@ class MACOSPlatform : Platform {
 actual fun getPlatform(): Platform = MACOSPlatform()
 
 fun main() {
-  initializeMarsXLog(Logging.LEVEL_DEBUG, "test", true)
+  initializeMarsXLog(Logging.LEVEL_DEBUG, "test")
   println(Greeting().greeting())
 }

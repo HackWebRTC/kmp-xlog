@@ -14,7 +14,6 @@ fun initializeMarsXLog(
     logDir: String,
     level: Int,
     namePrefix: String,
-    debugLog: Boolean
 ) {
     if (sInitialized) {
         return
@@ -24,9 +23,9 @@ fun initializeMarsXLog(
     val cachePath = context.filesDir.toString() + "/xlog"
     Xlog.open(true, level, Xlog.AppednerModeAsync, cachePath, logDir, namePrefix, "")
     Log.setLogImp(Xlog())
-    Log.setConsoleLogOpen(debugLog)
+    AndroidLogging.debugLog = level == Logging.LEVEL_DEBUG
+    Log.setConsoleLogOpen(AndroidLogging.debugLog)
 
-    AndroidLogging.debugLog = debugLog
     Logging.init(AndroidLogging)
 
     sInitialized = true

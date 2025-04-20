@@ -34,6 +34,12 @@ object Logging {
 
     fun debug() = impl.debug()
 
+    fun debug(tag: String, block: () -> String) {
+        if (debug()) {
+            debug(tag, block())
+        }
+    }
+
     fun debug(tag: String, content: String) {
         log(tag, content) { t, c ->
             impl.debug(t, c)

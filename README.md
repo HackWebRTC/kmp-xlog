@@ -51,14 +51,12 @@ fun initializeMarsXLog(
   logDir: String,
   level: Int,
   namePrefix: String,
-  debugLog: Boolean
 )
 
 // iOS/macOS/Linux/Windows initialize
 fun initializeMarsXLog(
   level: Int,
   namePrefix: String,
-  debugLog: Boolean
 )
 
 // JS initialize
@@ -66,6 +64,12 @@ fun initializeConsoleLog(debugLog: Boolean)
 
 // logging
 object Logging {
+  // if debug log is enabled (level is LEVEL_DEBUG)
+  fun debug(): Boolean
+
+  // compute log content lazily, only when debug log is enabled
+  fun debug(tag: String, block: () -> String)
+  
   fun debug(tag: String, content: String)
 
   fun info(tag: String, content: String)
@@ -76,12 +80,14 @@ object Logging {
 
 ## Env Setup
 
-You need to install [RVM](https://rvm.io/) to manage your ruby version, and install gems. You need to use homebrew to install the following tools:
+You will need cocoapods. You can use [RVM](https://rvm.io/) to manage your ruby version, and install gems.
+
+You need to use homebrew to install the following tools:
 
 ```bash
-brew install cocoapods xcodegen
+brew install xcodegen
 # if you have installed them earlier, you need to remove them at first,
-# or run brew link --overwrite xcodegen cocoapods
+# or run brew link --overwrite xcodegen
 ```
 
 You may need to restart your system so that Android Studio could use the correct ruby.

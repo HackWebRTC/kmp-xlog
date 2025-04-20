@@ -10,6 +10,6 @@ class CppPlatform : Platform {
 actual fun getPlatform(): Platform = CppPlatform()
 
 fun main() {
-  initializeMarsXLog(Logging.LEVEL_DEBUG, "test", true)
+  initializeMarsXLog(Logging.LEVEL_DEBUG, "test")
   println(Greeting().greeting())
 }

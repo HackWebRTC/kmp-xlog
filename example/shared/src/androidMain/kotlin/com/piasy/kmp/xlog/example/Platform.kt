@@ -11,5 +11,5 @@ class AndroidPlatform : Platform {
 actual fun getPlatform(): Platform = AndroidPlatform()
 
 fun initialize(context: Context) {
-  initializeMarsXLog(context, "logs", Logging.LEVEL_DEBUG, "test", true)
+  initializeMarsXLog(context, "logs", Logging.LEVEL_DEBUG, "test")
 }
