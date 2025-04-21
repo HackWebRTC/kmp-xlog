@@ -30,7 +30,7 @@
 
     [self.view addSubview:self.label];
 
-    [Kmp_xlogLoggingKt initializeMarsXLogLevel:1 namePrefix:@"test" debugLog:YES];
+    [Kmp_xlogLoggingKt initializeMarsXLogLevel:1 namePrefix:@"test"];
     [[Kmp_xlogLogging logging] infoTag:@"XXPXX" content:[NSString stringWithFormat:@"greeting from %@", [self getSystemVersion]]];
     [[Kmp_xlogLogging logging] errorTag:@"XXPXX" content:@"flush"];
 }
