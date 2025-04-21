@@ -62,5 +62,14 @@ jobs:
         echo 'KERNEL=="kvm", GROUP="kvm", MODE="0666", OPTIONS+="static_node=kvm"' | sudo tee /etc/udev/rules.d/99-kvm4all.rules
         sudo udevadm control --reload-rules
         sudo udevadm trigger --name-match=kvm
-    - name: Run it
+    - name: Run normal
+      if: ${{ !matrix.androidEmulator }}
       run: ${{ matrix.cmd }}
+    - name: Run Android connected check
+      if: ${{ matrix.androidEmulator }}
+      uses: reactivecircus/android-emulator-runner@v2
+      with:
+        api-level: 31
+        ndk: 21.3.6528147
+        cmake: 3.18.1
+        script: ${{ matrix.cmd }}
