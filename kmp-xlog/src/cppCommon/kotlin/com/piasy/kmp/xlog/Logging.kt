@@ -6,11 +6,10 @@ package com.piasy.kmp.xlog
 fun initializeMarsXLog(
     level: Int,
     namePrefix: String,
-    debugLog: Boolean
 ) {
-    xlog.MarsXLogInitialize(level, namePrefix, if (debugLog) 1 else 0)
+    CppLogging.debugLog = level == Logging.LEVEL_DEBUG
+    xlog.MarsXLogInitialize(level, namePrefix, if (CppLogging.debugLog) 1 else 0)
 
-    CppLogging.debugLog = debugLog
     Logging.init(CppLogging)
 }
 

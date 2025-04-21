@@ -12,5 +12,5 @@ class IOSPlatform : Platform {
 actual fun getPlatform(): Platform = IOSPlatform()
 
 fun initialize() {
-  initializeMarsXLog(Logging.LEVEL_DEBUG, "test", true)
+  initializeMarsXLog(Logging.LEVEL_DEBUG, "test")
 }

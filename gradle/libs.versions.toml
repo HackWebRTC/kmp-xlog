@@ -7,15 +7,18 @@ minSdk = "21"
 targetSdk = "35"
 agp = "8.7.3"
 kotlin = "2.1.10"
-mockk = "1.13.16"
 compose = "1.7.8"
 
 [libraries]
 kotlin-stdlib-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "kotlin" }
 kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
+
+androidx-junit = "androidx.test.ext:junit:1.2.1"
+androidx-runner = "androidx.test:runner:1.6.2"
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
-mockk = { module = "io.mockk:mockk", version.ref = "mockk" }
+mockk = "io.mockk:mockk:1.13.16"
+
 androidx-compose-ui = { module = "androidx.compose.ui:ui", version.ref = "compose" }
 androidx-compose-ui-tooling = { module = "androidx.compose.ui:ui-tooling", version.ref = "compose" }
 androidx-compose-ui-tooling-preview = { module = "androidx.compose.ui:ui-tooling-preview", version.ref = "compose" }

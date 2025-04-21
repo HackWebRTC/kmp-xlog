@@ -4,7 +4,6 @@ import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.platform.app.InstrumentationRegistry
 import com.piasy.kmp.xlog.Logging
 import com.piasy.kmp.xlog.initializeMarsXLog
-import org.junit.Assert.*
 import org.junit.Test
 import org.junit.runner.RunWith
 
@@ -25,7 +24,6 @@ class LoggingTest {
       "${appContext.getExternalFilesDir(null)?.absolutePath}/log",
       Logging.LEVEL_DEBUG,
       "test",
-      true
     )
 
     Logging.debug("xxx", "test debug log")
