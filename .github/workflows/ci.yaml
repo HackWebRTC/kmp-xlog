@@ -69,7 +69,7 @@ jobs:
       if: ${{ matrix.androidEmulator }}
       uses: reactivecircus/android-emulator-runner@v2
       with:
-        api-level: 31
+        api-level: 29
         ndk: 21.3.6528147
         cmake: 3.18.1
         script: ${{ matrix.cmd }}
