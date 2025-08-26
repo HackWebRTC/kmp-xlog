@@ -6,12 +6,11 @@ compileSdk = "35"
 minSdk = "21"
 targetSdk = "35"
 agp = "8.7.3"
-kotlin = "2.1.10"
+kotlin = "2.2.0"
 compose = "1.7.8"
 
 [libraries]
 kotlin-stdlib-js = { module = "org.jetbrains.kotlin:kotlin-stdlib-js", version.ref = "kotlin" }
-kotlinx-datetime = "org.jetbrains.kotlinx:kotlinx-datetime:0.6.1"
 
 androidx-junit = "androidx.test.ext:junit:1.2.1"
 androidx-runner = "androidx.test:runner:1.6.2"

@@ -1,6 +1,6 @@
 package com.piasy.kmp.xlog
 
-import kotlinx.datetime.Clock
+import kotlin.time.Clock
 import kotlin.math.min
 
 /**
