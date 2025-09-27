@@ -3,11 +3,11 @@ package com.piasy.kmp.xlog.example
 import com.piasy.kmp.xlog.Logging
 import com.piasy.kmp.xlog.initializeConsoleLog
 
-class JsPlatform : Platform {
-    override val name: String = "JS"
+class WasmJsPlatform : Platform {
+    override val name: String = "WasmJS"
 }
 
-actual fun getPlatform(): Platform = JsPlatform()
+actual fun getPlatform(): Platform = WasmJsPlatform()
 
 fun main() {
     initializeConsoleLog(true)

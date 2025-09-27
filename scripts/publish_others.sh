@@ -9,6 +9,8 @@
     publishMacosArm64PublicationToMavenCentralRepository \
     publishMacosX64PublicationToMavenCentralRepository \
     publishJsPublicationToMavenCentralRepository \
+    publishWasmJsPublicationToMavenCentralRepository \
+    publishWasmWasiPublicationToMavenCentralRepository \
     publishJvmPublicationToMavenCentralRepository \
     --no-configuration-cache
 

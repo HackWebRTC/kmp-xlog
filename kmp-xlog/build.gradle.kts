@@ -1,4 +1,6 @@
-import com.vanniktech.maven.publish.SonatypeHost
+@file:OptIn(ExperimentalWasmDsl::class)
+
+import org.jetbrains.kotlin.gradle.ExperimentalWasmDsl
 
 plugins {
     alias(libs.plugins.kmp)
@@ -49,10 +51,17 @@ kotlin {
         }
     }
 
-    js(IR) {
-        browser {
-        }
-        binaries.executable()
+    js {
+        browser()
+        nodejs()
+    }
+    wasmJs {
+        browser()
+        nodejs()
+        d8()
+    }
+    wasmWasi {
+        nodejs()
     }
 
     linuxX64 {
@@ -249,7 +258,7 @@ android {
 }
 
 mavenPublishing {
-    publishToMavenCentral(SonatypeHost.CENTRAL_PORTAL)
+    publishToMavenCentral()
 
     signAllPublications()
 

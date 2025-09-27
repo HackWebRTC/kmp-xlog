@@ -33,7 +33,7 @@ jobs:
           - os: windows-latest
             cmd: "./gradlew runKmp_xlogDebugExecutableMingwX64"
           - os: macos-latest
-            cmd: "./gradlew :example:shared:jsBrowserDistribution"
+            cmd: "./gradlew :example:shared:jsBrowserDistribution && ./gradlew :example:shared:wasmJsBrowserDistribution && ./gradlew :example:shared:wasmWasiNodeDevelopmentRun"
     runs-on: ${{ matrix.os }}
 
     steps:

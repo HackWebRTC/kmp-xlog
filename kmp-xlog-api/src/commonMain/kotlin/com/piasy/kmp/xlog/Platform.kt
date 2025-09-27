@@ -12,6 +12,8 @@ object Platform {
     const val WINDOWS = 4
     const val LINUX = 5
     const val JS = 6
+    const val WASM_JS = 7
+    const val WASM_WASI = 8
 
     private val platform = platform()
 
