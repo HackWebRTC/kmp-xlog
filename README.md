@@ -9,7 +9,9 @@ KMP wrapper for [tencent mars xlog](https://github.com/Tencent/mars).
 |      Platform      | 🛠Builds🛠 + 🔬Tests🔬 |
 | :----------------: | :------------------: |
 |      `JVM` 17      |          🚀          |
-| `JS`     (Chrome)  |          🚀          |
+| `JS`     (Chrome, Node)  |          🚀          |
+| `WasmJS` (Chrome, Node)  |          🚀          |
+| `WasmWasi` (Node)  |          🚀          |
 |     `Android`      |          🚀          |
 |       `iOS`        |          🚀          |
 |      `macOS`       |          🚀          |
